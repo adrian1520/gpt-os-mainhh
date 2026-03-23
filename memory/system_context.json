@@ -1,8 +1,10 @@
 {
   "system_id": "gpt-os",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "state": "READY",
   "active_branch": "main",
   "last_run_id": null,
-  "initialized": true
+  "initialized": true,
+  "architecture": "Event-Driven / Stateless",
+  "notes": "System zaktualizowany do obs\u0142ugi niezale\u017cnych agent\u00f3w. Gotowy na przyj\u0119cie logiki Prawnika (Legal OS)."
 }
