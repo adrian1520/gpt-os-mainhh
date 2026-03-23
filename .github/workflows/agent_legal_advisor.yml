@@ -17,7 +17,7 @@ jobs:
     - name: Run agent
       run: python modules/agents/legal_advisor.py
     - name: Safe Push
-      run: "git config user.name 'gpt-os-agent'\n git config user.email 'agent@os.local'\n\
-        \ git add events/\n git commit -m 'Event: legal_advisor completed' || echo\
-        \ 'No changes'\n for i in {1..5}; do git pull --rebase origin main; if git\
-        \ push; then exit 0; fi; sleep 2; done; exit 1"
+      run: "git config user.name \"gpt-os-agent\"\ngit config user.email \"agent@os.local\"\
+        \ngit add events/\ngit commit -m \"Event: legal_advisor completed\" || echo\
+        \ \"No changes\"\n\nfor i in {1..5}; do\n  git pull --rebase origin main\n\
+        \  if git push; then exit 0; fi\n  sleep 2\ndone\nexit 1"
