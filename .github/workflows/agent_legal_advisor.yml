@@ -2,14 +2,15 @@ name: AGENT LEGAD_ADVISOR
 
 on:
   repository_dispatch:
-    types: [trigger_legal_advisor]
+    types:
+      - trigger_legal_advisor
 
 jobs:
   process:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
