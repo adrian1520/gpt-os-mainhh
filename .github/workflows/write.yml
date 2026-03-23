@@ -11,10 +11,10 @@ jobs:
     - name: Load payload
       env:
         PAYLOAD: ${{ toJson(github.event.client_payload) }}
-      run: |-
+      run: |
         echo "$PAYLOAD" > payload.json
     - name: Validate payload
-      run: |-
+      run: |
         jq -e '.path and .content' payload.json
     - name: Write file
       run: |
