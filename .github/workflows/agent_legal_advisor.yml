@@ -18,12 +18,23 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Debug files
-        run: ls -R
-
-      - name: Execute Agent Logic
+      - name: Debug start
         run: |
+          echo "START"
+          pwd
+          ls -R
+
+      - name: Run agent (hard debug)
+        run: |
+          set -e
+          python --version
           python modules/agents/legal_advisor.py
+
+      - name: Debug after run
+        run: |
+          echo "AFTER RUN"
+          ls -R
+          cat events/legal_result.json || echo "NO FILE"
 
       - name: Safe Git Commit and Push
         run: |
