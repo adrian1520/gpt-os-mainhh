@@ -1,0 +1,26 @@
+name: AGENT LEGAL DOCUMENT
+on:
+  repository_dispatch:
+    types: [trigger_legal_document]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run legal document agent
+        run: |
+          python modules/agents/agent_document_legal.py
+
+      - name: SAFE PUSH
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          for i in {1..5}; do
+            git pull --rebase origin main && break
+            sleep $((RANDOM % 5))
+          done
+          git add events/*
+          git commit -m "legal document event" || echo "no changes"
+          git push
