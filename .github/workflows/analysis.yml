@@ -17,54 +17,28 @@ jobs:
         run: |
           TYPE=$(jq -r '.type' tasks/task.json)
 
-          # LEGAL INGEST
-          if [ "$TYPE" = "legal_ingest" ]; then
+          # SNAPSHOT
+          if [ "$TYPE" = "legal_snapshot" ]; then
             CONTENT=$(jq -r '.content' tasks/task.json)
-            RAW=$(echo "$CONTENT" | grep -oE '[IVX]* ?NSM[ -]?[0-9]+/[0-9]+' | head -n1)
-            NSM=$(echo "$RAW" | grep -oE '[0-9]+/[0-9]+')
-            NSM_CLEAN=$(echo "$NSM" | sed 's/\//-/')
-            DIR="Legal-os/Akta-Spraw/Akta-NSM-$NSM_CLEAN"
-            mkdir -p "$DIR"
-            echo "$CONTENT" > "$DIR/doc_$(date +%s).txt"
-          fi
-
-          # LEGAL METADATA + CLASSIFICATION
-          if [ "$TYPE" = "legal_metadata" ]; then
-            CONTENT=$(jq -r '.content' tasks/task.json)
-            RAW=$(echo "$CONTENT" | grep -oE '[IVX]* ?NSM[ -]?[0-9]+/[0-9]+' | head -n1)
+            RAW=$(echo "$CONTENT" | grep -oE '[IVW]*? NSM[ -]?[0-9]+/[0-9]+' | head -n1)
             NSM=$(echo "$RAW" | grep -oE '[0-9]+/[0-9]+')
             NSM_CLEAN=$(echo "$NSM" | sed 's/\//-/')
             DIR="Legal-os/Akta-Spraw/Akta-NSM-$NSM_CLEAN"
             mkdir -p "$DIR"
 
-            TTP="$DIR/tmp.txt"
-            echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' > "$TTP"
-            NEW="$DIR/new.json"
-            echo '{ "events": [' > "$NEW"
+            DATE=$(echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' | head -n1)
+            SUMMARY=$(echo "$CONTENT" | head -n2 | tr '\n' ' ')
+            KEY=$(echo "$CONTENT" | grep -E "wniosek|rozpraw|wyrok|dotyczy|ustanawia")
 
-            FIRST=true
-            while read DATE; do
-              DESC=
-$(echo "$CONTENT" | grep "$DATE" | head -n1)
-              TYPE_EVENT="other"
-              if echo "$DESC" | grep -qi "wniosek"; then TYPE_EVENT="wniosek"; fi
-              if echo "$DESC" | grep -qi "rozpraw"; then TYPE_EVENT="rozprawa"; fi
-              if echo "$DESC" | grep -qi "wyrok"; then TYPE_EVENT="wyrok"; fi
+            NEW="$DIR/snapshots_new.json"
+            echo '{ "snapshots": [' > "$NEW"
 
-              if [ "$FIRST" = true ]; then
-                FIRST=false
-              else
-                echo ',' >> "$NEW"
-
-              fi
-
-              echo "  {\"date\":\"$DATE\",\"type\":\"$TYPE_EVENT\",\"description\":\"$DESC\"}" >> "$NEW"
-            done < "$TTP"
+            echo "  {\"date\":\"$DATE\",\"summary\":\"$SUMMARY\",\"key_points\":[\"$KEY\"]}" >> "$NEW"
             echo ']}' >> "$NEW"
 
-            OUT="$DIR/timeline.json"
+            OUT="$DIR/snapshots.json"
             if [ -f "$OUT" ]; then
-              jq -s '{ events: ([.[0].events + .[1].events]) } | .tosort_by(.date)' "$OUT" "$NEW" > "$OUT.tmp"
+              jq -s '{ snapshots: ([.[0].snapshots + .[1].snapshots]) } | .tosort_by(.date)' "$OUT" "$NEW" > "$OUT.tmp"
               mv "$OUT.tmp" "$OUT"
             else
               mv "$NEW" "$OUT"
