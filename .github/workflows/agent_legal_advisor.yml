@@ -1,54 +1,23 @@
-name: AGENT LEGAD_ADVISOR
-
-on:
+name: AGENT LEGAL ADVISOR
+'on':
   repository_dispatch:
     types:
-      - trigger_legal_advisor
-
+    - trigger_legal_advisor
 jobs:
   process:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Debug start
-        run: |
-          echo "START"
-          pwd
-          ls -R
-
-      - name: Run agent (hard debug)
-        run: |
-          set -e
-          python --version
-          python modules/agents/legal_advisor.py
-
-      - name: Debug after run
-        run: |
-          echo "AFTER RUN"
-          ls -R
-          cat events/legal_result.json || echo "NO FILE"
-
-      - name: Safe Git Commit and Push
-        run: |
-          git config user.name "gpt-os-agent"
-          git config user.email "agent@os.local"
-          git add events/
-          git commit -m "Event: legal_advisor completed" || echo "No changes"
-
-          for i in {1..10}; do
-            git pull --rebase origin main
-            if git push; then
-              exit 0
-            fi
-            sleep $((RANDOM % 5 + 3))
-          done
-          exit 1
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+    - name: Run agent
+      run: python modules/agents/legal_advisor.py
+    - name: Safe Push
+      run: "git config user.name 'gpt-os-agent'\n git config user.email 'agent@os.local'\n\
+        \ git add events/\n git commit -m 'Event: legal_advisor completed' || echo\
+        \ 'No changes'\n for i in {1..5}; do git pull --rebase origin main; if git\
+        \ push; then exit 0; fi; sleep 2; done; exit 1"
