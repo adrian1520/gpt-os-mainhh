@@ -1,0 +1,40 @@
+name: AUTO REPO INDEXER
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'memory/repo_index.json'
+      - 'memory/context_loader.json'
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run Indexer
+        run: python modules/system/repo_indexer.py
+
+      - name: Safe Push Index
+        run: |
+          git config user.name "gpt-os-indexer"
+          git config user.email "indexer@os.local"
+          git add memory/repo_index.json
+          git commit -m "System: Auto-updated repo index" || echo "No changes"
+          
+          for i in {1..5}; do
+            git pull --rebase origin main
+            if git push; then
+              exit 0
+            fi
+            sleep $((RANDOM 	 3 + 2))
+          done
+          exit 1
