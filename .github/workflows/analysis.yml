@@ -10,68 +10,38 @@ jobs:
       - name: Load task
         run: |
           test -f tasks/task.json || exit 1
-      - name: Validate task
-        run: |
-          jq -e '.task_id and .type' tasks/task.json
       - name: Execute task
         run: |
           TYPE=$(jq -r '.type' tasks/task.json)
 
-          # SNAPSHOT
-          if [ "$TYPE" = "legal_snapshot" ]; then
+          # INGEST
+          if [ "$TYPE" = "legal_ingest" ]; then
             CONTENT=$(jq -r '.content' tasks/task.json)
-            RAW=$(echo "$CONTENT" | grep -oE '[IVW]*? NSM[ -]?[0-9]+/[0-9]+' | head -n1)
-            NSM=$(echo "$RAW" | grep -oE '[0-9]+/[0-9]+')
+            RAW=$(echo "$CONTENT" | grep -oE 'NSM ? [0-9]+/[0-9]+' | head -n1)
+            NSM =$(echo "$RAW" | grep -oE '[0-9]+/[0-9]+')
             NSM_CLEAN=$(echo "$NSM" | sed 's/\//-/')
             DIR="Legal-os/Akta-Spraw/Akta-NSM-$NSM_CLEAN"
             mkdir -p "$DIR"
+            echo "$CONTENT" > "$DIR/doc_$(date +%s).txt"
+          fi
 
+          # METADATA
+          if [ "$TYPE" = "legal_metadata" ]; then
+            CONTENT=$(jq -r '.content' tasks/task.json)
             DATE=$(echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' | head -n1)
-            SUMMARY=$(echo "$CONTENT" | head -n2 | tr '\n' ' ')
-            KEY=$(echo "$CONTENT" | grep -E "wniosek|rozpraw|wyrok|dotyczy|ustanawia")
+            NEW="{ \"events\": [ { \"date\": \"$DATE\" } ] }"
+            echo "$NEW" > temp.json
+        fi
 
-            NEW="$DIR/snapshots_new.json"
-            echo '{ "snapshots": [' > "$NEW"
-
-            echo "  {\"date\":\"$DATE\",\"summary\":\"$SUMMARY\",\"key_points\":[\"$KEY\"]}" >> "$NEW"
-            echo ']}' >> "$NEW"
-
-            OUT="$DIR/snapshots.json"
-            if [ -f "$OUT" ]; then
-              jq -s '{ snapshots: ([.[0].snapshots + .[1].snapshots]) } | .tosort_by(.date)' "$OUT" "$NEW" > "$OUT.tmp"
-              mv "$OUT.tmp" "$OUT"
-            else
-              mv "$NEW" "$OUT"
-            fi
+          # SNAPSHOT
+          if [ "$TYPE" = "legal_snapshot" ]; then
+            CONTENT=$(jq -r '.content' tasks/task.json)
+            DATE=$(echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' | head -n1)
+            SUMMARY=$(echo "$CONTENT" | head -n2)
+            echo "$DATE - $SUMMARY" > snap.txt
           fi
 
       - name: Cleanup
         run: rm -f tasks/task.json
-      - name: Commit execution
-        run: |
-          git config user.name "gpt-os"
-          git config user.email "gpt@os.local"
-          git pull --rebase origin main
-          git add .
-          git commit -m "task executed" || echo "No changes to commit"
-          git push
-      - name: Success output
-        if: success()
-        run: |
-          mkdir -p memory
-          echo '{"status":"success","run_id":"${{ github.run_id }}"}' > memory/run_status.json
-          echo '{"result":"analysis complete"}' > memory/result.json
-      - name: Failure output
-        if: failure()
-        run: |
-          mkdir -p memory
-          echo '{"error":"analysis_failed"}' > memory/error.json
-      - name: Commit outputs
-        if: always()
-        run: |
-          git config user.name "gpt-os"
-          git config user.email "gpt@os.local"
-          git pull --rebase origin main
-          git add memory/*
-          git commit -m "analysis output" || echo "No changes to commit"
-          git push
+      - name: Commit
+        run: git add . && git commit -m "update" && git push
