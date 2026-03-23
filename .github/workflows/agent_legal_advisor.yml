@@ -1,4 +1,5 @@
 name: AGENT LEGAD_ADVISOR
+
 on:
   repository_dispatch:
     types: [trigger_legal_advisor]
@@ -6,32 +7,36 @@ on:
 jobs:
   process:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Setup Environment
-      run: echo "Setup"
-    - name: Execute Agent Logic
-      env:
-        PAYLOAD: ${{ toJson(github.event.client_payload) }}
-      run: |
-        echo "$PAYLOAD" > payload.json
-        python modules/agents/legal_advisor.py
-    - name: Safe Git Commit and Push
-      run: |
-        git config user.name "gpt-os-agent"
-        git config user.email "agent@os.local"
-        git add events/
-        git commit -m "Event: legal_advisor completed" || echo "No changes"
-        for i in {1..10}; do
-          git pull --rebase origin main
-          if git push; then
-            echo "Successfully pushed event!"
-            exit 0
-          fi
-          DELAY=$((RANDOM % 5 + 3))
-          echo "Retrying in $DELAY seconds..."
-          sleep $DELAX
-        done
-        exit 1
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Debug files
+        run: ls -R
+
+      - name: Execute Agent Logic
+        run: |
+          python modules/agents/legal_advisor.py
+
+      - name: Safe Git Commit and Push
+        run: |
+          git config user.name "gpt-os-agent"
+          git config user.email "agent@os.local"
+          git add events/
+          git commit -m "Event: legal_advisor completed" || echo "No changes"
+
+          for i in {1..10}; do
+            git pull --rebase origin main
+            if git push; then
+              exit 0
+            fi
+            sleep $((RANDOM % 5 + 3))
+          done
+          exit 1
