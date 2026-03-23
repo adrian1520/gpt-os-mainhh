@@ -1,5 +1,5 @@
 name: WRITE AGENT
-'on':
+on:
   push:
     paths:
     - events/write_request.json
