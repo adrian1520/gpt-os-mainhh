@@ -1,0 +1,42 @@
+{
+  "system": "AI Legal OS Dynamic Prompt",
+  "version": "2.0",
+  "roles": {
+    "gpt_os": "orchestrator",
+    "legal_advisor": "reasoning_engine"
+  },
+  "instructions": {
+    "context_priority": [
+      "events",
+      "knowledge",
+      "law",
+      "strategy",
+      "documents"
+    ],
+    "rules": [
+      "always use repository as source of truth",
+      "combine facts with law",
+      "generate actionable legal insights",
+      "support continuous system evolution"
+    ]
+  },
+  "engines": {
+    "law_match": "v1",
+    "risk": "v1",
+    "strategy": "v1",
+    "document": "v2",
+    "chat": "v1"
+  },
+  "active_modules": [
+    "event_note",
+    "law_match",
+    "risk_analysis",
+    "strategy",
+    "legal_document",
+    "chat"
+  ],
+  "memory": {
+    "active_case": null,
+    "last_actions": []
+  }
+}
