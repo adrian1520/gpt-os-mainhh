@@ -1,0 +1,27 @@
+name: AGENT QUERY
+on:
+  repository_dispatch:
+    types: [trigger_query]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run query agent
+        run: |
+          export QUERY="${{ github.event.client_payload.query }}"
+          python modules/agents/agent_query.py
+
+      - name: SAFE PUSH
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          for i in {1..5}; do
+            git pull --rebase origin main && break
+            sleep $((RANDOM % 5))
+          done
+          git add events/*
+          git commit -m "query event" || echo "no changes"
+          git push
