@@ -22,6 +22,21 @@ jobs:
             mkdir -p "$(dirname "$TARGET")"
             echo "$CONTENT" > "$TARGET"
           fi
+
+        if [ "$TYPE" = "legal_ingest" ]; then
+          CONTENT=$(jq -r '.content' tasks/task.json)
+          NSM=$(echo "$CONTENT" | grep -oE 'NSM[ /-]?[0-9]+' | head -n1)
+
+          if [ -z "$NSM" ]; then
+            echo '{"error":"no_nsm_found"}' > memory/error.json
+            exit 1
+          fi
+
+          DIR="Legal-os/Akta-Spraw/Akta-$NSM"
+          mkdir -p "$DIR"
+          FILE="$DIR/doc_$(date +%s).txt"
+          echo "$CONTENT" > "$FILE"
+        fi
       - name: Cleanup
         run: rm -f tasks/task.json
       - name: Commit execution
