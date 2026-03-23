@@ -25,14 +25,18 @@ jobs:
 
         if [ "$TYPE" = "legal_ingest" ]; then
           CONTENT=$(jq -r '.content' tasks/task.json)
-          NSM=$(echo "$CONTENT" | grep -oE 'NSM[ /-]?[0-9]+' | head -n1)
+          RAW=$(echo "$CONTENT" | grep -oE '[IVX]* ?NSM[ -]?[0-9]+/[0-9]+' | head -n1)
 
-          if [ -z "$NSM" ]; then
+          if [ -z "$RAR" ]; then
             echo '{"error":"no_nsm_found"}' > memory/error.json
             exit 1
           fi
 
-          DIR="Legal-os/Akta-Spraw/Akta-$NSM"
+          NORM=
+$(echo "$RAR" | grep -oE '[0-9]+/[0-9]+')
+          NSM_CLEAN=$(echo "$NORM" | sed 's/\//-/')
+
+          DIR="Legal-os/Akta-Spraw/Akta-NSM-$NSM_CLEAN"
           mkdir -p "$DIR"
           FILE="$DIR/doc_$(date +%s).txt"
           echo "$CONTENT" > "$FILE"
