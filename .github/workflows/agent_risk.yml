@@ -1,0 +1,26 @@
+name: AGENT RISK
+on:
+  repository_dispatch:
+    types: [trigger_risk]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run risk agent
+        run: |
+          python modules/agents/agent_risk_analysis.py
+
+      - name: SAFE PUSH
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          for i in {1..5}; do
+            git pull --rebase origin main && break
+            sleep $((RANDOM % 5))
+          done
+          git add events/*
+          git commit -m "risk event" || echo "no changes"
+          git push
