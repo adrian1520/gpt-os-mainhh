@@ -36,8 +36,10 @@ jobs:
             TMP="$DIR/tmp_dates.txt"
             echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' > "$TMP"
 
-            OUT="$DIR/timeline.json"
-            echo '{ "events": [' > "$OUT"
+            NEW="$DIR/new_events.json"
+            ECHO={ "events": [ }
+
+            echo '{ "events": [' > "$NEW"
 
             FIRST=true
             while read DATE; do
@@ -46,14 +48,23 @@ jobs:
               if [ "$FIRST" = true ]; then
                 FIRST=false
               else
-                echo ',' >> "$OUT"
+                echo ',' >> "$NEW"
               fi
 
-              echo "  {\"date\":\"$DATE\",\"description\":\"$DESC\"}" >> "$OUT"
+              echo "  {\"date\":\"$DATE\",\"description\":\"$DESC\"}" >> "$NEW"
             done < "$TMP"
 
-            echo ']}' >> "$OUT"
-          fi
+            echo ']}' >> "$NEW"
+
+            OUT="$DIR/timeline.json"
+
+            if [ -f "$OUT" ]; then
+              jq -s '{ events: (.[0].events + .[1].events) } | .tosort_by(.date)' "$OUT" "$NEW" > "$OUT.tmp"
+              mv "$OUT.tmp" "$OUT"
+            else
+              mv "$NEW" "$OUT"
+            fi
+        fi
       - name: Cleanup
         run: rm -f tasks/task.json
       - name: Commit execution
