@@ -16,31 +16,44 @@ jobs:
       - name: Execute task
         run: |
           TYPE=$(jq -r '.type' tasks/task.json)
-          if [ "$TYPE" = "write_file" ]; then
-            TARGET=$(jq -r '.target' tasks/task.json)
+
+          if [ "$TYPE" = "legal_metadata" ]; then
             CONTENT=$(jq -r '.content' tasks/task.json)
-            mkdir -p "$(dirname "$TARGET")"
-            echo "$CONTENT" > "$TARGET"
+
+            RAW=$(echo "$CONTENT" | grep -oE '[IVX]* ?NSM[ -]?[0-9]+/[0-9]+' | head -n1)
+
+            if [ -z "$RAW" ]; then
+              echo '{"error":"no_nsm_found"}' > memory/error.json
+              exit 1
+            fi
+
+            NSM=$(echo "$RAW" | grep -oE '[0-9]+/[0-9]+')
+            NSM_CLEAN=$(echo "$NSM" | sed 's/\//-/')
+
+            DIR="Legal-os/Akta-Spraw/Akta-NSM-$NSM_CLEAN"
+            mkdir -p "$DIR"
+
+            TMP="$DIR/tmp_dates.txt"
+            echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' > "$TMP"
+
+            OUT="$DIR/timeline.json"
+            echo '{ "events": [' > "$OUT"
+
+            FIRST=true
+            while read DATE; do
+              DESC=$(echo "$CONTENT" | grep "$DATE" | head -n1 | sed 's/"/\'/g')
+
+              if [ "$FIRST" = true ]; then
+                FIRST=false
+              else
+                echo ',' >> "$OUT"
+              fi
+
+              echo "  {\"date\":\"$DATE\",\"description\":\"$DESC\"}" >> "$OUT"
+            done < "$TMP"
+
+            echo ']}' >> "$OUT"
           fi
-
-        if [ "$TYPE" = "legal_ingest" ]; then
-          CONTENT=$(jq -r '.content' tasks/task.json)
-          RAW=$(echo "$CONTENT" | grep -oE '[IVX]* ?NSM[ -]?[0-9]+/[0-9]+' | head -n1)
-
-          if [ -z "$RAR" ]; then
-            echo '{"error":"no_nsm_found"}' > memory/error.json
-            exit 1
-          fi
-
-          NORM=
-$(echo "$RAR" | grep -oE '[0-9]+/[0-9]+')
-          NSM_CLEAN=$(echo "$NORM" | sed 's/\//-/')
-
-          DIR="Legal-os/Akta-Spraw/Akta-NSM-$NSM_CLEAN"
-          mkdir -p "$DIR"
-          FILE="$DIR/doc_$(date +%s).txt"
-          echo "$CONTENT" > "$FILE"
-        fi
       - name: Cleanup
         run: rm -f tasks/task.json
       - name: Commit execution
@@ -56,7 +69,7 @@ $(echo "$RAR" | grep -oE '[0-9]+/[0-9]+')
         run: |
           mkdir -p memory
           echo '{"status":"success","run_id":"${{ github.run_id }}"}' > memory/run_status.json
-          echo '{"result":"analysis_complete"}' > memory/result.json
+          echo '{"result":"analysis complete"}' > memory/result.json
       - name: Failure output
         if: failure()
         run: |
