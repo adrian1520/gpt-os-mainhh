@@ -7,8 +7,6 @@ OUTPUT_DIR = "events"
 
 files = [f for f in os.listdir(EVENTS_DIR) if f.endswith(".json")]
 
-relations = []
-
 events = []
 
 for f in files:
@@ -19,22 +17,30 @@ for f in files:
     except:
         continue
 
-events_sorted = sorted(events, key=lambda x: x.get("timestamp",0))
+relations = []
 
-for i in range(len(events_sorted)-1):
-    e1 = events_sorted[i]
-    e2 = events_sorted[i+1]
+# group by hash-like identifiers if present
+by_id = {}
 
-    if abs(e1.get("timestamp",0) - e2.get("timestamp",0)) < 5:
-        relations.append({
-            "from": e1.get("type"),
-            "to": e2.get("type"),
-            "relation": "same_input"
-        })
+for e in events:
+    eid = e.get("id") or e.get("event_id")
+    if eid:
+        by_id.setdefault(eid, []).append(e)
+
+for eid, group in by_id.items():
+    if len(group) > 1:
+        for i in range(len(group)-1):
+            relations.append({
+                "id": eid,
+                "from": group[i].get("type"),
+                "to": group[i+1].get("type"),
+                "relation": "same_entity"
+            })
 
 result = {
     "timestamp": int(time.time()),
     "type": "agent_relations",
+    "mode": "hash_based",
     "relations": relations,
     "count": len(relations)
 }
