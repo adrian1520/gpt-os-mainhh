@@ -1,4 +1,4 @@
 {
-  "target_path": "test/output.txt",
-  "content": "HELLO FROM GPT-OS"
+  "target_path": "outputs/test_zwyciestwa.txt",
+  "content": "Gratulacje! To jest pierwszy plik fizycznie zapisany przez agenta w architekturze Event-Driven. System dziala perfekcyjnie!"
 }
