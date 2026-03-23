@@ -1,0 +1,31 @@
+name: AGENT MEMORY UPDATE
+on:
+  repository_dispatch:
+    types: [trigger_memory_update]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare task
+        run: |
+          mkdir -p tasks
+          echo '${{ toJson(github.event.client_payload) }}' > tasks/task.json
+
+      - name: Run memory update
+        run: |
+          python modules/agents/agent_memory_update.py
+
+      - name: SAFE PUSH
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          for i in {1..5}; do
+            git pull --rebase origin main && break
+            sleep $((RANDOM % 5))
+          done
+          git add memory/*
+          git commit -m "memory update" || echo "no changes"
+          git push
