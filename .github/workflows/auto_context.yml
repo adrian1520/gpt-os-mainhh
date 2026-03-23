@@ -23,13 +23,13 @@ jobs:
           mkdir -p events
           python modules/system/context_builder.py
 
-      - name: Safe Push Mechanism
+      - name: Safe Push
         run: |
           git config user.name "gpt-os-memory"
           git config user.email "memory@os.local"
           git add memory/context_loader.json
           git commit -m "Auto-update context" || echo "No changes"
-          
+
           for i in {1..5}; do
             git pull --rebase origin main
             if git push; then
