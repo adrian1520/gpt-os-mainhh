@@ -1,6 +1,8 @@
 name: ANALYSIS
 'on':
-  workflow_dispatch: {}
+  repository_dispatch:
+    types:
+    - run_analysis
 jobs:
   analysis:
     runs-on: ubuntu-latest
