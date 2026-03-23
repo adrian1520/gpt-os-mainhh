@@ -1,0 +1,31 @@
+name: EVENT NOTE
+on:
+  repository_dispatch:
+    types: [trigger_note]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare task
+        run: |
+          mkdir -p tasks
+          echo '${{ toJson(github.event.client_payload) }}' > tasks/task.json
+
+      - name: Run note agent
+        run: |
+          python modules/agents/agent_event_note.py
+
+      - name: SAFE PUSH
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          for i in {1..5}; do
+            git pull --rebase origin main && break
+            sleep $((RANDOM % 5))
+          done
+          git add events/*
+          git commit -m "note event" || echo "no changes"
+          git push
