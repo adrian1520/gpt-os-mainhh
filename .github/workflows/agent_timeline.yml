@@ -1,0 +1,26 @@
+name: AGENT TIMELINE
+on:
+  repository_dispatch:
+    types: [trigger_timeline]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run timeline agent
+        run: |
+          python modules/agents/agent_timeline.py
+
+      - name: SAFE PUSH
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          for i in {1..5}; do
+            git pull --rebase origin main && break
+            sleep $((RANDOM % 5))
+          done
+          git add events/*
+          git commit -m "timeline event" || echo "no changes"
+          git push
