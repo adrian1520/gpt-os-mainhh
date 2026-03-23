@@ -14,75 +14,17 @@ jobs:
         run: |
           TYPE=$(jq -r '.type' tasks/task.json)
 
-          # LEGAL INGEST
-          if [ "$TYPE" = "legal_ingest" ]; then
-            CONTENT=$(jq -r '.content' tasks/task.json)
-            RAW=$(echo "$CONTENT" | grep -oE 'NSM ?[0-9]+/[0-9]+' | head -n1)
-            NSM=$(echo "$RAW" | grep -oE '[0-9]+/[0-9]+')
-            NSM_CLEAN=$(echo "$NSM" | sed 's/\//-/')
-            DIR="Legal-os/Akta-Spraw/Akta-NSM-$NSM_CLEAN"
-            mkdir -p "$DIR"
-            echo "$CONTENT" > "$DIR/doc_$(date +%s).txt"
-          fi
-
-          # METADATA
           if [ "$TYPE" = "legal_metadata" ]; then
             CONTENT=$(jq -r '.content' tasks/task.json)
-            RAW=$(echo "$CONTENT" | grep -oE 'NSM ?[0-9]+/[0-9]+' | head -n1)
-            NORM=
-$(echo "$RAW" | grep -oE '[0-9]+/[0-9]+')
-            NORM_CLEAN=$(echo "$NORM" | sed 's/\//-/')
-            DIR="Legal-os/Akta-Spraw/Akta-NSM-$NorM_CLEAN."
-            mkdir -p "$DIR"
-
             DATE=$(echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' | head -n1)
-            EVENT_ID="event_$(date +%s)"
+            EVENT_ID=$(echo "$DATE-$CONTENT" | sha1sum | cut -c1-12)
 
-            NEW="$DIR/new_events.json"
-            echo '{ "events": [' > "$NEW"
-
-            echo "  {\"id\":\"$EVENT_ID\",\"date\":\"$DATE\",\"type\":\"other\",\"description\":\"$CONTENT\" }" >> "$NEW"
-
-            echo ']}' >> "$NEW"
-
-            OUT="$DIR/timeline.json"
-            if [ -f "$OUT" ]; then
-              jq -s '{ events: ([.[0].events + .[1].events ]) }' "$OUT" "$NEW" > "$OUT.tmp"
-              mv "$OUT.tmp" "$OUT"
-            else
-              mv "$NEW" "$OUT"
-            fi
+            echo "EVENT $EVENT_ID" > event.txt
           fi
 
-          # SNAPSHOT
           if [ "$TYPE" = "legal_snapshot" ]; then
             CONTENT=$(jq -r '.content' tasks/task.json)
             DATE=$(echo "$CONTENT" | grep -oE '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{4}' | head -n1)
-            SUMMARY=$(echo "$CONTENT" | head -n2)
-            SNAP_ID="snap_$(date +%s)"
-
-            NEW="$DIR/new_snap.json"
-            echo '{ "snapshots": [' > "$NEW"
-
-            echo "  {\"id\":\"$SNAP_ID\",\"date\":\"$DATE\",\"summary\":\"$SUMMARY\",\"event_id\":\"$EVENT_ID\"}" >> "$NEW"
-
-            echo ']}' >> "$NEW"
-
-            OUT="$DIR/snapshots.json"
-            if [ -f "$OUT" ]; then
-              jq -s '{ snapshots: ([.[0].snapshots + .[1].snapshots ]) }' "$OUT" "$NEW" > "$OUT.tmp"
-              mv "$OUT.tmp" "$OUT"
-            else
-              mv "$NEW" "$OUT"
-            fi
+            SNAP_ID=$(echo "$DATE-$CONTENT" | sha1sum | cut -c1-12)
+            echo "SNAP $SNAP_ID" > snap.txt
           fi
-
-      - name: Cleanup
-        run: rm -f tasks/task.json
-      - name: Commit
-        run: |
-          git config user.name "gpt-os"
-          git config user.email "gpt@os.local"
-          git add .
-          git commit -m "task executed" || echo "No changes"
-          git push
