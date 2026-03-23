@@ -1,8 +1,8 @@
 {
   "system_id": "gpt-os",
   "version": "1.0.0",
-  "state": "INIT",
+  "state": "READY",
   "active_branch": "main",
   "last_run_id": null,
-  "initialized": false
+  "initialized": true
 }
