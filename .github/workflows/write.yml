@@ -11,61 +11,42 @@ jobs:
     - name: Load payload
       env:
         PAYLOAD: ${{ toJson(github.event.client_payload) }}
-      run: echo "$PAYLOAD" > payload.json
+      run: |-
+        echo "$PAYLOAD" > payload.json
     - name: Validate payload
-      run: jq -e '.path and .content' payload.json
+      run: |-
+        jq -e '.path and .content' payload.json
     - name: Write file
-      run: 'FILE=$(jq -r ''.path'' payload.json)
-
-        CONTENT=$(jq -r ''.content'' payload.json)
-
+      run: |
+        FILE=$(jq -r '.path' payload.json)
+        CONTENT=$(jq -r '.content' payload.json)
         mkdir -p "$(dirname "$FILE")"
-
         echo "$CONTENT" > "$FILE"
-
-        '
     - name: Commit
-      run: 'git config user.name "gpt-os"
-
+      run: |
+        git config user.name "gpt-os"
         git config user.email "gpt@os.local"
-
         git pull --rebase origin main
-
         git add .
-
         git commit -m "write_file" || echo "No changes to commit"
-
         git push
-
-        '
     - name: Success output
       if: success()
-      run: 'mkdir -p memory
-
-        echo ''{"status":"success","run_id":"${{ github.run_id }}"}'' > memory/run_status.json
-
-        echo ''{"result":"file_written"}'' > memory/result.json
-
-        '
+      run: |
+        mkdir -p memory
+        echo '{"status":"success","run_id":"${{ github.run_id }}"}' > memory/run_status.json
+        echo '{"result":"file_written"}' > memory/result.json
     - name: Failure output
       if: failure()
-      run: 'mkdir -p memory
-
-        echo ''{"error":"write_failed"}'' > memory/error.json
-
-        '
+      run: |
+        mkdir -p memory
+        echo '{"error":"write_failed"}' > memory/error.json
     - name: Commit outputs
       if: always()
-      run: 'git config user.name "gpt-os"
-
+      run: |
+        git config user.name "gpt-os"
         git config user.email "gpt@os.local"
-
         git pull --rebase origin main
-
         git add memory/*
-
         git commit -m "run output (write)" || echo "No changes to commit"
-
         git push
-
-        '
