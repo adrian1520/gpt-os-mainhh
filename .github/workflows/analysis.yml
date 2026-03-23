@@ -1,0 +1,54 @@
+name: RUN ANALYSIS
+on:
+  repository_dispatch:
+    types: [run_analysis]
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load task
+        run: |
+          test -f tasks/task.json || exit 1
+      - name: Validate task
+        run: |
+          jq -e '.task_id and .type' tasks/task.json
+      - name: Execute task
+        run: |
+          TYPE=$(jq -r '.type' tasks/task.json)
+          if [ "$TYPE" = "write_file" ]; then
+            TARGET=$(jq -r '.target' tasks/task.json)
+            CONTENT=$(jq -r '.content' tasks/task.json)
+            mkdir -p "$(dirname "$TARGET")"
+            echo "$CONTENT" > "$TARGET"
+          fi
+      - name: Cleanup
+        run: rm -f tasks/task.json
+      - name: Commit execution
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          git pull --rebase origin main
+          git add .
+          git commit -m "task executed" || echo "No changes to commit"
+          git push
+      - name: Success output
+        if: success()
+        run: |
+          mkdir -p memory
+          echo '{"status":"success","run_id":"${{ github.run_id }}"}' > memory/run_status.json
+          echo '{"result":"analysis_complete"}' > memory/result.json
+      - name: Failure output
+        if: failure()
+        run: |
+          mkdir -p memory
+          echo '{"error":"analysis_failed"}' > memory/error.json
+      - name: Commit outputs
+        if: always()
+        run: |
+          git config user.name "gpt-os"
+          git config user.email "gpt@os.local"
+          git pull --rebase origin main
+          git add memory/*
+          git commit -m "analysis output" || echo "No changes to commit"
+          git push
