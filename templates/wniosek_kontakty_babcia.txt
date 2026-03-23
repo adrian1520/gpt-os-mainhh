@@ -1,0 +1,28 @@
+Sąd Rejonowy w ....................................
+
+Wydział Rodzinny i Nieletnich
+
+Sygn. akt: {{sygnatura}}
+
+Wnioskodawca: {{wnioskodawca}}
+Uczestnik: {{uczestnik}}
+
+WNIOSEK O UREGULOWANIE KONTAKTÓW
+
+Wnoszę o:
+
+1. Uregulowanie kontaktów babci {{wnioskodawca}} z małoletnim {{dziecko}}
+2. Ustalenie kontaktów w następujący sposób:
+   {{propozycja_kontaktów}}
+
+3. Udział kuratora w kontaktach (jeżeli zasadne)
+
+UZASADNIENIE:
+
+{{stan_faktyczny}}
+
+Wnioskodawca utrzymuje więź emocjonalną z dzieckiem, jednak kontakty są utrudniane lub uniemożliwiane.
+
+Wobec powyższego wnoszę jak na wstępie.
+
+Podpis
