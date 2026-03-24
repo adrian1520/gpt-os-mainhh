@@ -1,1 +1,392 @@
-[]
+[
+  {
+    "id": "KRO_92",
+    "tags": ["family_law", "parental_authority_duration"],
+    "templates": ["Zgodnie z art. 92 k.r.o. dziecko pozostaje aż do pełnoletności pod władzą rodzicielską."]
+  },
+  {
+    "id": "KRO_93_1",
+    "tags": ["family_law", "parental_authority_entitlement"],
+    "templates": ["Zgodnie z art. 93 §1 k.r.o. władza rodzicielska przysługuje obojgu rodzicom."]
+  },
+  {
+    "id": "KRO_93_2",
+    "tags": ["family_law", "parental_authority_restriction"],
+    "templates": ["Zgodnie z art. 93 §2 k.r.o. jeżeli wymaga tego dobro dziecka, sąd może orzec o zawieszeniu, ograniczeniu lub pozbawieniu władzy rodzicielskiej jednego lub obojga rodziców."]
+  },
+  {
+    "id": "KRO_94_1",
+    "tags": ["family_law", "single_parent_authority"],
+    "templates": ["Zgodnie z art. 94 §1 k.r.o. jeżeli jedno z rodziców nie żyje albo nie ma pełnej zdolności do czynności prawnych, władza rodzicielska przysługuje drugiemu z rodziców."]
+  },
+  {
+    "id": "KRO_94_3",
+    "tags": ["family_law", "guardianship"],
+    "templates": ["Zgodnie z art. 94 §3 k.r.o. jeżeli żadnemu z rodziców nie przysługuje władza rodzicielska albo rodzice są nieznani, ustanawia się dla dziecka opiekę."]
+  },
+  {
+    "id": "KRO_95_1",
+    "tags": ["family_law", "parental_authority_scope"],
+    "templates": ["Zgodnie z art. 95 §1 k.r.o. władza rodzicielska obejmuje obowiązek i prawo rodziców do wykonywania pieczy nad osobą i majątkiem dziecka oraz do jego wychowania z poszanowaniem jego godności i praw."]
+  },
+  {
+    "id": "KRO_95_2",
+    "tags": ["family_law", "child_obedience"],
+    "templates": ["Zgodnie z art. 95 §2 k.r.o. dziecko powinno być posłuszne rodzicom oraz uwzględniać ich opinie i zalecenia w sprawach, w których może samodzielnie podejmować decyzje."]
+  },
+  {
+    "id": "KRO_95_3",
+    "tags": ["family_law", "child_welfare_principle"],
+    "templates": ["Zgodnie z art. 95 §3 k.r.o. władza rodzicielska powinna być wykonywana zgodnie z dobrem dziecka i interesem społecznym."]
+  },
+  {
+    "id": "KRO_95_4",
+    "tags": ["family_law", "child_participation"],
+    "templates": ["Zgodnie z art. 95 §4 k.r.o. rodzice powinni wysłuchać dziecka w ważnych sprawach i uwzględnić jego rozsądne życzenia, jeżeli pozwala na to jego rozwój."]
+  },
+  {
+    "id": "KRO_96_1",
+    "tags": ["family_law", "parental_duties"],
+    "templates": ["Zgodnie z art. 96 §1 k.r.o. rodzice wychowują dziecko, troszczą się o jego rozwój fizyczny i duchowy oraz przygotowują je do pracy dla dobra społeczeństwa."]
+  },
+  {
+    "id": "KRO_96_2",
+    "tags": ["family_law", "parental_capacity"],
+    "templates": ["Zgodnie z art. 96 §2 k.r.o. rodzice bez pełnej zdolności do czynności prawnych uczestniczą w sprawowaniu bieżącej pieczy nad dzieckiem, chyba że sąd postanowi inaczej."]
+  },
+  {
+    "id": "KRO_961",
+    "tags": ["family_law", "prohibition_of_corporal_punishment"],
+    "templates": ["Zgodnie z art. 961 k.r.o. zakazuje się stosowania kar cielesnych wobec małoletniego."]
+  },
+  {
+    "id": "KRO_97_1",
+    "tags": ["family_law", "joint_parental_authority"],
+    "templates": ["Zgodnie z art. 97 §1 k.r.o. każde z rodziców jest obowiązane i uprawnione do wykonywania władzy rodzicielskiej."]
+  },
+  {
+    "id": "KRO_97_2",
+    "tags": ["family_law", "parental_decision_making"],
+    "templates": ["Zgodnie z art. 97 §2 k.r.o. o istotnych sprawach dziecka rodzice rozstrzygają wspólnie, a w razie braku porozumienia decyduje sąd."]
+  },
+  {
+    "id": "KRO_98_1",
+    "tags": ["family_law", "legal_representation"],
+    "templates": ["Zgodnie z art. 98 §1 k.r.o. rodzice są przedstawicielami ustawowymi dziecka i mogą działać samodzielnie."]
+  },
+  {
+    "id": "KRO_98_2",
+    "tags": ["family_law", "representation_limitations"],
+    "templates": ["Zgodnie z art. 98 §2 k.r.o. rodzice nie mogą reprezentować dziecka w czynnościach prawnych między dzieckiem a nimi lub innymi dziećmi, z wyjątkiem określonych sytuacji."]
+  },
+  {
+    "id": "KRO_98_3",
+    "tags": ["family_law", "procedural_application"],
+    "templates": ["Zgodnie z art. 98 §3 k.r.o. przepisy o ograniczeniach reprezentacji stosuje się odpowiednio w postępowaniach przed sądami i organami."]
+  },
+  {
+    "id": "KRO_99_1",
+    "tags": ["family_law", "child_representative"],
+    "templates": ["Zgodnie z art. 99 §1 k.r.o. sąd ustanawia reprezentanta dziecka, gdy rodzice nie mogą go reprezentować."]
+  },
+  {
+    "id": "KRO_99_2",
+    "tags": ["family_law", "representative_powers"],
+    "templates": ["Zgodnie z art. 99 §2 k.r.o. reprezentant dziecka jest umocowany do dokonywania wszelkich czynności związanych ze sprawą."]
+  },
+  {
+    "id": "KRO_99_3",
+    "tags": ["family_law", "representative_rules"],
+    "templates": ["Zgodnie z art. 99 §3 k.r.o. do reprezentanta dziecka stosuje się odpowiednio przepisy dotyczące opiekuna."]
+  },
+  {
+    "id": "KRO_991_1",
+    "tags": ["family_law", "representative_requirements"],
+    "templates": ["Zgodnie z art. 991 §1 k.r.o. reprezentantem dziecka może być adwokat lub radca prawny posiadający odpowiednią wiedzę lub szkolenie."]
+  },
+  {
+    "id": "KRO_991_2",
+    "tags": ["family_law", "representative_alternative"],
+    "templates": ["Zgodnie z art. 991 §2 k.r.o. w mniej skomplikowanych sprawach reprezentantem dziecka może być także inna osoba spełniająca określone wymagania."]
+  },
+  {
+    "id": "KRO_991_3",
+    "tags": ["family_law", "criminal_procedure_exception"],
+    "templates": ["Zgodnie z art. 991 §3 k.r.o. przepisu §2 nie stosuje się w postępowaniu karnym."]
+  },
+  {
+    "id": "KRO_992_1",
+    "tags": ["family_law", "representative_information_duties"],
+    "templates": ["Zgodnie z art. 992 §1 k.r.o. reprezentant dziecka przekazuje rodzicom informacje o postępowaniu i uzyskuje od nich dane niezbędne do reprezentacji."]
+  },
+  {
+    "id": "KRO_992_2",
+    "tags": ["family_law", "information_access"],
+    "templates": ["Zgodnie z art. 992 §2 k.r.o. reprezentant dziecka może uzyskiwać informacje od instytucji i organizacji."]
+  },
+  {
+    "id": "KRO_992_3",
+    "tags": ["family_law", "child_communication"],
+    "templates": ["Zgodnie z art. 992 §3 k.r.o. reprezentant dziecka informuje dziecko o przebiegu sprawy w sposób dostosowany do jego rozwoju."]
+  },
+  {
+    "id": "KRO_992_4",
+    "tags": ["family_law", "confidentiality"],
+    "templates": ["Zgodnie z art. 992 §4 k.r.o. reprezentant dziecka jest obowiązany do zachowania tajemnicy, z wyjątkiem informacji o zagrożeniu dobra dziecka."]
+  },
+  {
+    "id": "KRO_992_5",
+    "tags": ["family_law", "application_to_entities"],
+    "templates": ["Zgodnie z art. 992 §5 k.r.o. przepisy dotyczące informacji stosuje się odpowiednio do podmiotów sprawujących pieczę zastępczą."]
+  },
+  {
+    "id": "KRO_992a_1",
+    "tags": ["family_law", "court_supervision"],
+    "templates": ["Zgodnie z art. 992a §1 k.r.o. nad działalnością reprezentanta dziecka czuwa sąd opiekuńczy."]
+  },
+  {
+    "id": "KRO_992a_2",
+    "tags": ["family_law", "reporting_obligation"],
+    "templates": ["Zgodnie z art. 992a §2 k.r.o. reprezentant dziecka składa sądowi okresowe informacje o swojej działalności."]
+  },
+  {
+    "id": "KRO_993_1",
+    "tags": ["family_law", "remuneration"],
+    "templates": ["Zgodnie z art. 993 §1 k.r.o. o wynagrodzeniu reprezentanta dziecka orzeka sąd lub organ prowadzący postępowanie."]
+  },
+  {
+    "id": "KRO_993_2",
+    "tags": ["family_law", "remuneration_rules"],
+    "templates": ["Zgodnie z art. 993 §2 k.r.o. wynagrodzenie reprezentanta niebędącego prawnikiem ustala się według przepisów o kuratorze."]
+  },
+  {
+    "id": "KRO_993_3",
+    "tags": ["family_law", "lawyer_remuneration"],
+    "templates": ["Zgodnie z art. 993 §3 k.r.o. wynagrodzenie reprezentanta będącego adwokatem lub radcą prawnym ustala się według przepisów o pomocy prawnej z urzędu."]
+  },
+  {
+    "id": "KRO_100_1",
+    "tags": ["family_law", "public_support"],
+    "templates": ["Zgodnie z art. 100 §1 k.r.o. organy publiczne są obowiązane udzielać pomocy rodzicom w wykonywaniu władzy rodzicielskiej."]
+  },
+  {
+    "id": "KRO_100_2",
+    "tags": ["family_law", "institutional_support"],
+    "templates": ["Zgodnie z art. 100 §2 k.r.o. organy zawiadamiają właściwe jednostki o potrzebie udzielenia pomocy rodzinie."]
+  },
+  {
+    "id": "KRO_101_1",
+    "tags": ["family_law", "property_management"],
+    "templates": ["Zgodnie z art. 101 §1 k.r.o. rodzice obowiązani są sprawować zarząd majątkiem dziecka z należytą starannością."]
+  },
+  {
+    "id": "KRO_101_2",
+    "tags": ["family_law", "property_exclusion"],
+    "templates": ["Zgodnie z art. 101 §2 k.r.o. zarząd rodziców nie obejmuje zarobku dziecka ani przedmiotów oddanych do jego swobodnego użytku."]
+  },
+  {
+    "id": "KRO_101_3",
+    "tags": ["family_law", "court_permission"],
+    "templates": ["Zgodnie z art. 101 §3 k.r.o. rodzice nie mogą bez zezwolenia sądu dokonywać czynności przekraczających zwykły zarząd majątkiem dziecka."]
+  },
+  {
+    "id": "KRO_101_4",
+    "tags": ["family_law", "inheritance_exception"],
+    "templates": ["Zgodnie z art. 101 §4 k.r.o. odrzucenie spadku w imieniu dziecka w określonych przypadkach nie wymaga zezwolenia sądu."]
+  },
+  {
+    "id": "KRO_102",
+    "tags": ["family_law", "property_management_exclusion"],
+    "templates": ["Zgodnie z art. 102 k.r.o. darczyńca lub spadkodawca może wyłączyć przedmioty majątku dziecka spod zarządu rodziców."]
+  },
+  {
+    "id": "KRO_103",
+    "tags": ["family_law", "income_use"],
+    "templates": ["Zgodnie z art. 103 k.r.o. dochód z majątku dziecka przeznacza się na jego utrzymanie i potrzeby rodziny."]
+  },
+  {
+    "id": "KRO_104_1",
+    "tags": ["family_law", "inventory"],
+    "templates": ["Zgodnie z art. 104 §1 k.r.o. sąd może nakazać sporządzenie inwentarza majątku dziecka."]
+  },
+  {
+    "id": "KRO_104_2",
+    "tags": ["family_law", "annual_limits"],
+    "templates": ["Zgodnie z art. 104 §2 k.r.o. sąd może ustalić roczne limity czynności majątkowych bez zezwolenia."]
+  },
+  {
+    "id": "KRO_105",
+    "tags": ["family_law", "return_of_property"],
+    "templates": ["Zgodnie z art. 105 k.r.o. po ustaniu zarządu rodzice są obowiązani zwrócić majątek dziecka i złożyć rachunek."]
+  },
+  {
+    "id": "KRO_106",
+    "tags": ["family_law", "modification_of_judgment"],
+    "templates": ["Zgodnie z art. 106 k.r.o. sąd może zmienić orzeczenie o władzy rodzicielskiej, jeżeli wymaga tego dobro dziecka."]
+  },
+  {
+    "id": "KRO_107_1",
+    "tags": ["family_law", "separated_parents"],
+    "templates": ["Zgodnie z art. 107 §1 k.r.o. sąd określa sposób wykonywania władzy rodzicielskiej przez rodziców żyjących w rozłączeniu."]
+  },
+  {
+    "id": "KRO_107_2",
+    "tags": ["family_law", "parental_authority_decision"],
+    "templates": ["Zgodnie z art. 107 §2 k.r.o. w razie braku porozumienia sąd rozstrzyga o sposobie wykonywania władzy rodzicielskiej."]
+  },
+  {
+    "id": "KRO_107_3",
+    "tags": ["family_law", "contact_waiver"],
+    "templates": ["Zgodnie z art. 107 §3 k.r.o. na zgodny wniosek stron sąd może nie orzekać o kontaktach z dzieckiem."]
+  },
+  {
+    "id": "KRO_108",
+    "tags": ["family_law", "incapacitated_child"],
+    "templates": ["Zgodnie z art. 108 k.r.o. rodzice dziecka ubezwłasnowolnionego podlegają ograniczeniom jak opiekun."]
+  },
+  {
+    "id": "KRO_109_1",
+    "tags": ["family_law", "child_welfare_measures"],
+    "templates": ["Zgodnie z art. 109 §1 k.r.o. sąd wydaje zarządzenia, gdy dobro dziecka jest zagrożone."]
+  },
+  {
+    "id": "KRO_109_2",
+    "tags": ["family_law", "court_measures"],
+    "templates": ["Zgodnie z art. 109 §2 k.r.o. sąd może zastosować środki takie jak nadzór, ograniczenia lub umieszczenie dziecka w pieczy zastępczej."]
+  },
+  {
+    "id": "KRO_109_3",
+    "tags": ["family_law", "property_guardian"],
+    "templates": ["Zgodnie z art. 109 §3 k.r.o. sąd może powierzyć zarząd majątkiem dziecka kuratorowi."]
+  },
+  {
+    "id": "KRO_109_4",
+    "tags": ["family_law", "institutional_notification"],
+    "templates": ["Zgodnie z art. 109 §4 k.r.o. sąd zawiadamia właściwe jednostki o zastosowanych środkach i ich realizacji."]
+  },
+  {
+    "id": "KRO_1121_1",
+    "tags": ["family_law", "foster_care", "custody_rights"],
+    "templates": ["Zgodnie z art. 1121 §1 k.r.o. obowiązek i prawo wykonywania bieżącej pieczy nad dzieckiem, jego wychowania i reprezentowania w tych sprawach, a w szczególności w dochodzeniu świadczeń przeznaczonych na zaspokojenie jego potrzeb, należą do rodziny zastępczej, prowadzącego rodzinny dom dziecka albo kierującego placówką opiekuńczo-wychowawczą, regionalną placówką opiekuńczo-terapeutyczną lub interwencyjnym ośrodkiem preadopcyjnym, a także odpowiednio do kierującego zakładem opiekuńczo-leczniczym, zakładem pielęgnacyjno-opiekuńczym lub zakładem rehabilitacji leczniczej; pozostałe obowiązki i prawa wynikające z władzy rodzicielskiej należą do rodziców dziecka."]
+  },
+  {
+    "id": "KRO_1121_2",
+    "tags": ["family_law", "foster_care", "court_decision"],
+    "templates": ["Zgodnie z art. 1121 §2 k.r.o. przepisu §1 nie stosuje się, jeżeli sąd opiekuńczy postanowił inaczej."]
+  },
+  {
+    "id": "KRO_1122",
+    "tags": ["family_law", "foster_care_system", "legal_framework"],
+    "templates": ["Zgodnie z art. 1122 k.r.o. organizację, funkcjonowanie oraz finansowanie rodzin zastępczych, rodzinnych domów dziecka, placówek opiekuńczo-wychowawczych, regionalnych placówek opiekuńczo-terapeutycznych i interwencyjnych ośrodków preadopcyjnych oraz zasady określające kryteria wiekowe dzieci umieszczanych w tych placówkach i ośrodkach regulują przepisy o wspieraniu rodziny i systemie pieczy zastępczej."]
+  },
+  {
+    "id": "KRO_1123_1",
+    "tags": ["family_law", "foster_care_placement_conditions"],
+    "templates": ["Zgodnie z art. 1123 §1 k.r.o. umieszczenie dziecka w pieczy zastępczej może nastąpić jedynie wówczas, gdy uprzednio stosowane inne środki przewidziane w art. 109 zarządzenia sądu opiekuńczego w sytuacji zagrożenia dobra dziecka §2 pkt 1–4 oraz formy pomocy rodzicom dziecka nie doprowadziły do usunięcia stanu zagrożenia dobra dziecka, chyba że konieczność niezwłocznego zapewnienia dziecku pieczy zastępczej wynika z poważnego zagrożenia dobra dziecka, w szczególności zagrożenia jego życia lub zdrowia."]
+  },
+  {
+    "id": "KRO_1123_2",
+    "tags": ["family_law", "foster_care_prohibition"],
+    "templates": ["Zgodnie z art. 1123 §2 k.r.o. umieszczenie dziecka w pieczy zastępczej wbrew woli rodziców wyłącznie z powodu ubóstwa nie jest dopuszczalne."]
+  },
+  {
+    "id": "KRO_1124",
+    "tags": ["family_law", "foster_care_duration"],
+    "templates": ["Zgodnie z art. 1124 k.r.o. dziecko umieszcza się w pieczy zastępczej do czasu zaistnienia warunków umożliwiających jego powrót do rodziny albo umieszczenia go w rodzinie przysposabiającej."]
+  },
+  {
+    "id": "KRO_1125_1",
+    "tags": ["family_law", "foster_care_assignment"],
+    "templates": ["Zgodnie z art. 1125 §1 k.r.o. sąd może powierzyć sprawowanie pieczy zastępczej małżonkom albo osobie niepozostającej w związku małżeńskim, którzy są wstępnymi albo rodzeństwem dziecka, a także innym osobom spełniającym wymagania określone w przepisach o wspieraniu rodziny i systemie pieczy zastępczej."]
+  },
+  {
+    "id": "KRO_1125_2",
+    "tags": ["family_law", "foster_care_temporary_assignment"],
+    "templates": ["Zgodnie z art. 1125 §2 k.r.o. jeżeli jest to uzasadnione dobrem dziecka sąd może tymczasowo, nie dłużej jednak niż na 6 miesięcy, powierzyć pełnienie funkcji rodziny zastępczej osobom niespełniającym warunku niezbędnych szkoleń określonych w przepisach o wspieraniu rodziny i systemie pieczy zastępczej."]
+  },
+  {
+    "id": "KRO_1126",
+    "tags": ["family_law", "disabled_child", "foster_care_priority"],
+    "templates": ["Zgodnie z art. 1126 k.r.o. piecza zastępcza nad dzieckiem posiadającym orzeczenie o niepełnosprawności albo orzeczenie o umiarkowanym lub znacznym stopniu niepełnosprawności jest powierzana przede wszystkim rodzinie zastępczej zawodowej."]
+  },
+  {
+    "id": "KRO_1127_1",
+    "tags": ["family_law", "foster_care_placement"],
+    "templates": ["Zgodnie z art. 1127 §1 k.r.o. sąd umieszcza dziecko w rodzinnej pieczy zastępczej na terenie powiatu miejsca zamieszkania dziecka."]
+  },
+  {
+    "id": "KRO_1127_2",
+    "tags": ["family_law", "foster_care_location"],
+    "templates": ["Zgodnie z art. 1127 §2 k.r.o. w przypadku braku możliwości umieszczenia dziecka w rodzinnej pieczy zastępczej na terenie powiatu miejsca zamieszkania dziecka lub gdyby takie umieszczenie było sprzeczne z dobrem dziecka, sąd umieszcza dziecko w rodzinnej pieczy zastępczej na terenie innego powiatu."]
+  },
+  {
+    "id": "KRO_1127_3",
+    "tags": ["family_law", "institutional_foster_care"],
+    "templates": ["Zgodnie z art. 1127 §3 k.r.o. sąd umieszcza dziecko w instytucjonalnej pieczy zastępczej, jeżeli brak jest możliwości umieszczenia dziecka w rodzinnej pieczy zastępczej lub z innych ważnych względów nie jest to zasadne."]
+  },
+  {
+    "id": "KRO_1127_4",
+    "tags": ["family_law", "foster_care_assessment"],
+    "templates": ["Zgodnie z art. 1127 §4 k.r.o. umieszczając dziecko w pieczy zastępczej, sąd bierze pod uwagę możliwość wywiązania się z obowiązku zapewnienia pracy z rodziną oraz możliwość utrzymywania kontaktów z rodzicami, o ile sąd ich nie zakazał."]
+  },
+  {
+    "id": "KRO_1127_5",
+    "tags": ["family_law", "administrative_notification"],
+    "templates": ["Zgodnie z art. 1127 §5 k.r.o. sąd, po umieszczeniu dziecka w pieczy zastępczej, informuje starostę powiatu zapewniającego temu dziecku pieczę zastępczą o przyczynach umieszczenia dziecka w pieczy zastępczej."]
+  },
+  {
+    "id": "KRO_1128",
+    "tags": ["family_law", "sibling_placement"],
+    "templates": ["Zgodnie z art. 1128 k.r.o. rodzeństwo powinno być umieszczone w tej samej rodzinie zastępczej, rodzinnym domu dziecka, placówce opiekuńczo-wychowawczej lub regionalnej placówce opiekuńczo-terapeutycznej, chyba że byłoby to sprzeczne z dobrem dziecka."]
+  },
+  {
+    "id": "KRO_113_1",
+    "tags": ["family_law", "child_contact"],
+    "templates": ["Zgodnie z art. 113 §1 k.r.o. rodzice oraz ich dziecko mają prawo i obowiązek utrzymywania ze sobą kontaktów."]
+  },
+  {
+    "id": "KRO_113_2",
+    "tags": ["family_law", "child_contact_scope"],
+    "templates": ["Zgodnie z art. 113 §2 k.r.o. kontakty z dzieckiem obejmują w szczególności przebywanie z dzieckiem (odwiedziny, spotkania, zabieranie dziecka poza miejsce jego stałego pobytu) i bezpośrednie porozumiewanie się, utrzymywanie korespondencji, korzystanie z innych środków porozumiewania się na odległość, w tym ze środków komunikacji elektronicznej."]
+  },
+  {
+    "id": "KRO_1131_1",
+    "tags": ["family_law", "child_contact_arrangements"],
+    "templates": ["Zgodnie z art. 1131 §1 k.r.o. jeżeli dziecko przebywa stale u jednego z rodziców, sposób utrzymywania kontaktów z dzieckiem przez drugiego z nich rodzice określają wspólnie, kierując się dobrem dziecka i biorąc pod uwagę jego rozsądne życzenia; w braku porozumienia rozstrzyga sąd opiekuńczy."]
+  },
+  {
+    "id": "KRO_1131_2",
+    "tags": ["family_law", "child_contact_application"],
+    "templates": ["Zgodnie z art. 1131 §2 k.r.o. przepisy §1 stosuje się odpowiednio, jeżeli dziecko nie przebywa u żadnego z rodziców, a pieczę nad nim sprawuje opiekun lub gdy zostało umieszczone w pieczy zastępczej."]
+  },
+  {
+    "id": "KRO_1132_1",
+    "tags": ["family_law", "contact_restriction"],
+    "templates": ["Zgodnie z art. 1132 §1 k.r.o. jeżeli wymaga tego dobro dziecka, sąd opiekuńczy ograniczy utrzymywanie kontaktów rodziców z dzieckiem."]
+  },
+  {
+    "id": "KRO_1132_2",
+    "tags": ["family_law", "contact_restriction_measures"],
+    "templates": ["Zgodnie z art. 1132 §2 k.r.o. sąd opiekuńczy może w szczególności: 1) zakazać spotykania się z dzieckiem, 2) zakazać zabierania dziecka poza miejsce jego stałego pobytu, 3) zezwolić na spotykanie się z dzieckiem tylko w obecności drugiego z rodziców albo opiekuna, kuratora sądowego lub innej osoby wskazanej przez sąd, 4) ograniczyć kontakty do określonych sposobów porozumiewania się na odległość, 5) zakazać porozumiewania się na odległość."]
+  },
+  {
+    "id": "KRO_1133",
+    "tags": ["family_law", "contact_prohibition"],
+    "templates": ["Zgodnie z art. 1133 k.r.o. jeżeli utrzymywanie kontaktów rodziców z dzieckiem poważnie zagraża dobru dziecka lub je narusza, sąd zakaże ich utrzymywania."]
+  },
+  {
+    "id": "KRO_1134",
+    "tags": ["family_law", "parental_obligations", "court_orders"],
+    "templates": ["Zgodnie z art. 1134 k.r.o. sąd opiekuńczy, orzekając w sprawie kontaktów z dzieckiem, może zobowiązać rodziców do określonego postępowania, w szczególności skierować ich do placówek lub specjalistów zajmujących się terapią rodzinną, poradnictwem lub świadczących rodzinie inną stosowną pomoc z jednoczesnym wskazaniem sposobu kontroli wykonania wydanych zarządzeń."]
+  },
+  {
+    "id": "KRO_1135",
+    "tags": ["family_law", "modification_of_contact_orders"],
+    "templates": ["Zgodnie z art. 1135 k.r.o. sąd opiekuńczy może zmienić rozstrzygnięcie w sprawie kontaktów, jeżeli wymaga tego dobro dziecka."]
+  },
+  {
+    "id": "KRO_1136",
+    "tags": ["family_law", "extended_family_contact"],
+    "templates": ["Zgodnie z art. 1136 k.r.o. przepisy niniejszego oddziału stosuje się odpowiednio do kontaktów rodzeństwa, dziadków, powinowatych w linii prostej, a także innych osób, jeżeli sprawowały one przez dłuższy czas pieczę nad dzieckiem."]
+  }
+]
