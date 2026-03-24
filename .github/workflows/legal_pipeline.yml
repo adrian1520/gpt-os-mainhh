@@ -50,6 +50,9 @@ jobs:
       - name: Run Case Core
         run: python modules/agents/agent_case_core_v1.py
 
+      - name: Build Context Bundle
+        run: python modules/system/build_context_bundle.py
+
       - name: Save outputs
         run: |
           mkdir -p Legal-os/Outputs
@@ -61,11 +64,12 @@ jobs:
           cp risk.json Legal-os/Outputs/risk.json || true
           cp strategy.json Legal-os/Outputs/strategy.json || true
           cp case.json Legal-os/Outputs/case.json || true
+          cp memory/context_bundle.json Legal-os/Outputs/context_bundle.json || true
 
       - name: Commit & Push outputs
         run: |
           git config --global user.name "gpt-os-bot"
           git config --global user.email "bot@gpt-os.local"
           git add Legal-os/Outputs || true
-          git commit -m "auto: full pipeline outputs" || echo "No changes"
+          git commit -m "auto: full pipeline outputs + context bundle" || echo "No changes"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
