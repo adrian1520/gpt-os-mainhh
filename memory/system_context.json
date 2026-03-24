@@ -60,6 +60,7 @@
           "case_intelligence.json",
           "contradictions.json",
           "facts.json",
+          "legal_action.md",
           "risk.json",
           "run.json",
           "strategy.json"
