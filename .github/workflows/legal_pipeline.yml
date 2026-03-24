@@ -1,9 +1,8 @@
-name: Legal OS Pipeline
+name: Legal OS Pipeline (Event Driven)
 
 on:
-  push:
-    paths:
-      - "Legal-os/Akta-Spraw/**/Pisma_Ori/*"
+  repository_dispatch:
+    types: [legal_intake]
 
 jobs:
 
