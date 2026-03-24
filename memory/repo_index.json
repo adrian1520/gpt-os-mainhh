@@ -116,6 +116,7 @@
         "agent_event_note.py",
         "agent_law_match.py",
         "agent_memory_update.py",
+        "agent_parser_v2.py",
         "agent_query.py",
         "agent_relations.py",
         "agent_risk_analysis.py",
