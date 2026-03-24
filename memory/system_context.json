@@ -1,10 +1,85 @@
 {
-  "system_id": "gpt-os",
-  "version": "3.0.0",
-  "state": "READY",
-  "active_branch": "main",
-  "last_run_id": null,
-  "initialized": true,
-  "architecture": "Event-Driven / Stateless",
-  "notes": "System zaktualizowany do obs\u0142ugi niezale\u017cnych agent\u00f3w. Gotowy na przyj\u0119cie logiki Prawnika (Legal OS)."
+  "status": "READY",
+  "system_memory": "active",
+  "repo_map": {
+    "root": [
+      "system_plan.md"
+    ],
+    "knowledge": [],
+    "knowledge/kro": [
+      "art_58.json",
+      "art_133.json",
+      "art_56.json",
+      "art_57.json"
+    ],
+    "templates": [
+      "wniosek_kontakty_babcia.txt"
+    ],
+    "evolution": [
+      ".gitkeep"
+    ],
+    "metrics": [
+      ".gitkeep"
+    ],
+    "Legal-os": [
+      ".gitkeep"
+    ],
+    "Legal-os/Akta-Spraw": [
+      ".gitkeep"
+    ],
+    "memory": [
+      "context_loader.json",
+      "result.json",
+      "case_index.json",
+      "system_prompt.json",
+      "session_log.json",
+      "system_context.json",
+      "error.json",
+      "run_index.json",
+      "repo_index.json",
+      "run_status.json"
+    ],
+    "outputs": [
+      ".gitkeep",
+      "dziennik_pokladowy.md",
+      "test_zwyciestwa.txt"
+    ],
+    "events": [
+      ".gitkeep",
+      "write_request.json"
+    ],
+    "tasks": [
+      ".gitkeep"
+    ],
+    "modules": [
+      ".gitkeep"
+    ],
+    "modules/system": [
+      "context_builder.py",
+      "repo_indexer.py"
+    ],
+    "modules/agents": [
+      "agent_law_match.py",
+      "agent_strategy.py",
+      "agent_contradictions.py",
+      "agent_query.py",
+      "agent_summary.py",
+      "agent_relations.py",
+      "parser_type.py",
+      "agent_timeline.py",
+      "parser_sygnatur.py",
+      "agent_document_generator.py",
+      "parser_dates.py",
+      "agent_risk_analysis.py",
+      "agent_event_note.py",
+      "legal_advisor.py",
+      "agent_memory_update.py",
+      "agent_chat.py",
+      "agent_document_legal.py",
+      "agent_aggregator.py"
+    ],
+    "cases": [
+      ".gitkeep"
+    ]
+  }
 }
