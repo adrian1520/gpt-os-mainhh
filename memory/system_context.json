@@ -148,7 +148,9 @@
         "files": [
           "agent_aggregator.py",
           "agent_case_core_v1.py",
+          "agent_case_intelligence.py",
           "agent_chat.py",
+          "agent_contradiction_engine.py",
           "agent_contradictions.py",
           "agent_document_generator.py",
           "agent_document_legal.py",
