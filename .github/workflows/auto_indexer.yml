@@ -1,13 +1,14 @@
 name: AUTO REPO INDEXER
-
 on:
   push:
     branches: [ main ]
     paths-ignore:
-      - 'memory/repo_index.json'
-      - 'memory/context_loader.json'
-  pull_request:
-    branches: [ main ]
+      - 'memory/**'
+      - 'events/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-index:
@@ -16,27 +17,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-          
       - name: Run Indexer
-        run: python modules/system/repo_indexer.py
-        
-      - name: Safe Push Index
         run: |
-          git config user.name "gpt-os-indexer"
-          git config user.email "indexer@os.local"
+          python modules/system/repo_indexer.py
+          git config user.name 'gpt-os-system'
+          git config user.email 'system@os.local'
           git add memory/repo_index.json
-          git commit -m "System: Auto-updated repo index" || echo "No changes"
-          
-          for i in {1..5}; do
-            git pull --rebase origin main
-            if git push; then
-              exit 0
-            fi
-            sleep $((RANDOM % 3 + 2))
-          done
-          exit 1
+          git commit -m "System: Auto-updated repo index [skip ci]" || true
+          git pull --rebase origin main
+          git push
