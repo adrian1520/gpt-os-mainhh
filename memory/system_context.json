@@ -114,6 +114,7 @@
         ],
         "reasoning": {
           "files": [
+            "case_intelligence_spec.json",
             "contradiction_engine_spec.json"
           ]
         }
