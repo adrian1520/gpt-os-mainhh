@@ -1,69 +1,36 @@
 import json
-from pathlib import Path
 
-BASE = Path(__file__).resolve().parents[2]
-BUNDLE_PATH = BASE / "memory/context_bundle.json"
-OUTPUT_PATH = BASE / "memory/gpt_context.txt"
+MAX_CHARS = 5000
 
-MAX_LEN = 5000
+def load_json(path):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return {}
 
+def compress_text(text, limit=MAX_CHARS):
+    if len(text) <= limit:
+        return text
+    return text[:limit] + "...[TRIMMED]"
 
-def load_bundle():
-    if not BUNDLE_PATH.exists():
-        raise Exception("⚠ BRAK DANYCH: context_bundle.json missing")
+def build_gpt_context():
+    system_context = load_json("memory/system_context.json")
+    case_memory = load_json("memory/case_memory.json")
+    context_bundle = load_json("memory/context_bundle.json")
+    session_log = load_json("memory/session_log.json")
 
-    with open(BUNDLE_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+    prompt = {
+        "system": system_context,
+        "case": case_memory,
+        "context": context_bundle,
+        "session": session_log[-5:]
+    }
 
+    prompt_str = json.dumps(prompt, indent=2)
+    prompt_str = compress_text(prompt_str)
 
-def safe_str(text, max_len=300):
-    text = str(text)
-    return text[:max_len]
-
-
-def build_context(bundle):
-
-    system = bundle.get("system", {})
-    session_log = bundle.get("context", {}).get("session_log", [])
-    case = bundle.get("runtime", {}).get("case_memory", {})
-
-    parts = []
-
-    # SYSTEM
-    parts.append(f"SYSTEM: {system.get('status')} v{bundle.get('meta', {}).get('version')}")
-
-    # CASE
-    if case:
-        parts.append("\nCASE:")
-        for k, v in case.items():
-            parts.append(f"- {k}: {safe_str(v)}")
-
-    # EVENTS
-    parts.append("\nEVENTS:")
-    for event in session_log[-5:]:
-        parts.append(f"- {event.get('event')}")
-
-    # RISK
-    if "risk_level" in case:
-        parts.append(f"\nRISK: {case.get('risk_level')}")
-
-    context = "\n".join(parts)
-
-    return context[:MAX_LEN]
-
-
-def save_context(text):
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        f.write(text)
-
-
-def main():
-    bundle = load_bundle()
-    context = build_context(bundle)
-    save_context(context)
-
-    print("✅ GPT CONTEXT BUILT")
-
+    return prompt_str
 
 if __name__ == "__main__":
-    main()
+    print(build_gpt_context())
