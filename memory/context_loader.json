@@ -1,7 +1,7 @@
 {
   "current_mode": "GPT_OS",
   "active_case": "DEFAULT",
-  "last_summary": "Aktualizacja: 2026-03-24 00:00:29\nOstatnie zdarzenia:\n[write_request.json] event: Brak",
+  "last_summary": "Aktualizacja: 2026-03-24 00:05:11\nOstatnie zdarzenia:\n[write_request.json] event: Brak",
   "load_rules": {
     "always": [
       "memory/system_context.json"
