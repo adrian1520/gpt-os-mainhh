@@ -1,6 +1,22 @@
 {
   "case_id": "AUTO",
-  "documents": [],
+  "documents": [
+    {
+      "document_type": "inne",
+      "signature": "III Nsm 1180/24",
+      "facts": [],
+      "events": [],
+      "requests": [],
+      "legal_references": [],
+      "theses": [],
+      "institutional_actions": [],
+      "pressure_signals": [],
+      "language_assessment": {},
+      "legal_assessment": {},
+      "risk_analysis": {},
+      "strategy": {}
+    }
+  ],
   "entities": [],
   "child": {},
   "facts": [],
@@ -8,10 +24,25 @@
   "timeline": [],
   "legal_references": [],
   "theses": [],
-  "risk_analysis": {},
-  "strategy": {},
+  "risk_analysis": {
+    "global_risk": "low",
+    "risks": []
+  },
+  "strategy": {
+    "phase": "monitoring",
+    "main_goal": "ochrona pozycji procesowej",
+    "priorities": [],
+    "recommended_actions": [],
+    "forbidden_actions": [],
+    "tactical_rules": [
+      "komunikacja neutralna",
+      "dokumentowanie wszystkich zdarzeń",
+      "argumentacja oparta o dobro dziecka"
+    ],
+    "expected_outcomes": []
+  },
   "case_state": {
-    "phase": "",
-    "last_update": "2026-03-24T03:45:16.693942"
+    "phase": "monitoring",
+    "last_update": "2026-03-24T03:48:55.196355"
   }
 }

@@ -1,0 +1,15 @@
+{
+  "strategy": {
+    "phase": "monitoring",
+    "main_goal": "ochrona pozycji procesowej",
+    "priorities": [],
+    "recommended_actions": [],
+    "forbidden_actions": [],
+    "tactical_rules": [
+      "komunikacja neutralna",
+      "dokumentowanie wszystkich zdarzeń",
+      "argumentacja oparta o dobro dziecka"
+    ],
+    "expected_outcomes": []
+  }
+}
