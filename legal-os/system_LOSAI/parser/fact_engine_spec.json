@@ -1,0 +1,35 @@
+{
+  "engine": "fact_engine_v1",
+  "description": "Transforms parsed documents into normalized facts",
+  "input": "Ekstrakcja_Danych/*.json",
+  "output": "facts/facts.json",
+  "schema": {
+    "fact_id": "string",
+    "date": "string",
+    "source": "string",
+    "subject": "normalized_topic",
+    "statement_raw": "string",
+    "statement_normalized": "string",
+    "actors": [],
+    "polarity": [
+      "positive",
+      "negative",
+      "neutral"
+    ],
+    "confidence": "float"
+  },
+  "normalization_rules": {
+    "contact_refusal": [
+      "odmawia kontakt\u00f3w",
+      "nie chce spotka\u0144"
+    ],
+    "contact_positive": [
+      "ch\u0119tnie uczestniczy",
+      "kontakty przebiegaj\u0105 dobrze"
+    ],
+    "delivery_issue": [
+      "brak dor\u0119czenia",
+      "nie otrzymano wezwania"
+    ]
+  }
+}
