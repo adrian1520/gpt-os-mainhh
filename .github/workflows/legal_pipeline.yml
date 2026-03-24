@@ -53,6 +53,28 @@ jobs:
       - name: Build Context Bundle
         run: python modules/system/build_context_bundle.py
 
+      - name: Update Case Memory
+        run: |
+          python - <<EOF
+          from modules.system.case_memory_write import write_facts, write_law, write_risk, write_strategy
+          import json
+
+          try:
+              facts = json.load(open("facts.json"))
+              write_facts(facts.get("facts", []))
+          except: pass
+
+          try:
+              risk = json.load(open("risk.json"))
+              write_risk(risk.get("level"), risk.get("reason"))
+          except: pass
+
+          try:
+              strategy = json.load(open("strategy.json"))
+              write_strategy(strategy.get("plan", ""))
+          except: pass
+          EOF
+
       - name: Save outputs
         run: |
           mkdir -p Legal-os/Outputs
