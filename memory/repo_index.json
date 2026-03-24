@@ -54,7 +54,9 @@
     "Outputs": {
       "files": [
         "case.json",
-        "run.json"
+        "risk.json",
+        "run.json",
+        "strategy.json"
       ]
     },
     "system_LOSAI": {
@@ -93,6 +95,13 @@
         "art_56.json",
         "art_57.json",
         "art_58.json"
+      ]
+    }
+  },
+  "legal-os": {
+    "system_LOSAI": {
+      "files": [
+        "parser_training_bundle.json"
       ]
     }
   },
