@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "fact_id": "68d216e7-de77-471d-8b65-6cc2ee29aa34",
+    "source": "Legal-os/Akta-Spraw/AKTA_NSM_1180_24/Ekstrakcja_Danych/postanowienie_prawomocnosc.json",
+    "statement_raw": "stwierdzono prawomocność",
+    "statement_normalized": "unknown",
+    "polarity": "neutral"
+  }
+]

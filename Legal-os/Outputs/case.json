@@ -2,24 +2,25 @@
   "case_id": "AUTO",
   "documents": [
     {
-      "document_type": "inne",
+      "document_type": "postanowienie",
       "signature": "III Nsm 1180/24",
-      "facts": [],
-      "events": [],
-      "requests": [],
-      "legal_references": [],
-      "theses": [],
-      "institutional_actions": [],
-      "pressure_signals": [],
-      "language_assessment": {},
-      "legal_assessment": {},
-      "risk_analysis": {},
-      "strategy": {}
+      "facts": [
+        {
+          "type": "procedural",
+          "content": "stwierdzono prawomocność"
+        }
+      ],
+      "events": []
     }
   ],
   "entities": [],
   "child": {},
-  "facts": [],
+  "facts": [
+    {
+      "type": "procedural",
+      "content": "stwierdzono prawomocność"
+    }
+  ],
   "events": [],
   "timeline": [],
   "legal_references": [],
@@ -43,6 +44,6 @@
   },
   "case_state": {
     "phase": "monitoring",
-    "last_update": "2026-03-24T04:46:03.001996"
+    "last_update": "2026-03-24T04:55:01.307681"
   }
 }
