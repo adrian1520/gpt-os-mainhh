@@ -28,5 +28,14 @@ jobs:
           git config user.email 'system@os.local'
           git add memory/repo_index.json
           git commit -m "System: Auto-updated repo index [skip ci]" || true
-          git pull --rebase origin main
-          git push
+          for i in {1..10}; do
+            git pull --rebase origin main
+            if git push; then
+              echo "Push success"
+              exit 0
+            fi
+            DELAY=$((RANDOM % 5 + 3))
+            echo "Retry in $DELAY s..."
+            sleep $DELAY
+          done
+          exit 1
