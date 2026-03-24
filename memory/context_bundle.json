@@ -1,17 +1,27 @@
 {
   "system": {
-    "status": "INITIALIZED"
+    "status": "READY",
+    "mode": "LEGAL_OS_ACTIVE"
   },
-  "knowledge": {},
-  "context": {
-    "system_context": {},
-    "session_log": []
+  "case": {
+    "id": "dynamic",
+    "facts": "latest",
+    "risk": "latest",
+    "strategy": "latest"
   },
-  "runtime": {
-    "live_session": {},
-    "case_memory": {}
+  "session": {
+    "last_events": "trimmed",
+    "active": true
   },
-  "meta": {
-    "version": "1.0"
+  "instructions": [
+    "use case_memory as primary source",
+    "prioritize latest facts over raw inputs",
+    "apply system_LOSAI schemas",
+    "avoid repo_tree usage",
+    "keep responses grounded in legal outputs"
+  ],
+  "limits": {
+    "max_chars": 5000,
+    "mode": "compressed"
   }
 }
