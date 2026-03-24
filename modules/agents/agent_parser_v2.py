@@ -1,8 +1,7 @@
-# agent_parser_v2.py
-
 import re
 import json
-from datetime import datetime
+import glob
+import os
 
 def extract_signature(text):
     match = re.search(r'[IVX]+ Nsm \d+/\d+', text)
@@ -39,10 +38,16 @@ def extract_events(text):
     return [{"date": m} for m in matches]
 
 def build_extraction(text):
+    facts = []
+    if "brak doręchenia" in text.lower():
+        facts.append({"type": "procedural", "content": "brak doręczenia"})
+    if "brak wezwania" in text.lower():
+        facts.append({"type": "procedural", "content": "brak wezwania"})
+
     return {
         "document_type": classify_document(text),
         "signature": extract_signature(text),
-        "facts": [],
+        "facts": facts,
         "events": extract_events(text),
         "requests": extract_requests(text),
         "legal_references": extract_legal(text),
@@ -56,13 +61,19 @@ def build_extraction(text):
     }
 
 def main():
-    with open("input.md", "r", encoding="utf-8") as f:
-        text = f.read()
+    files = glob.glob("Legal-os/Akta-Spraw/**/Pisma_Ori/*.md", recursive=True)
 
-    extraction = build_extraction(text)
+    for file_path in files:
+        with open(file_path, "r", encoding="utf-8") as f:
+            text = f.read()
 
-    with open("output.json", "w", encoding="utf-8") as f:
-        json.dump(extraction, f, indent=2, ensure_ascii=False)
+        extraction = build_extraction(text)
+
+        out_path = file_path.replace("Pisma_Ori", "Ekstrakcja_Danych").replace(".md", ".json")
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(extraction, f, indent=2, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()
