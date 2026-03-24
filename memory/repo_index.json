@@ -25,6 +25,7 @@
     ".gitkeep"
   ],
   "memory": [
+    "context_loader.json",
     "result.json",
     "case_index.json",
     "system_prompt.json",
@@ -36,7 +37,8 @@
     "run_status.json"
   ],
   "outputs": [
-    ".gitkeep"
+    ".gitkeep",
+    "test_zwyciestwa.txt"
   ],
   "events": [
     ".gitkeep",
