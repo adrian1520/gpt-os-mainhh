@@ -45,6 +45,7 @@
     },
     "system_LOSAI": {
       "files": [
+        "extraction_schema.json",
         "system_definition.md"
       ]
     }
