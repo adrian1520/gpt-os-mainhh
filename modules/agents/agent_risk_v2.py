@@ -2,6 +2,8 @@
 
 import json
 
+import glob
+
 def detect_procedural_risk(extraction):
     risks = []
     text_facts = " ".join([f.get("content","") for f in extraction.get("facts",[])])
@@ -13,50 +15,54 @@ def detect_procedural_risk(extraction):
             "severity": "critical",
             "severity_score": 5,
             "confidence": 0.9,
-            "evidence": ["brak doręczenia / wezwania"],
+            "evidence": [text_facts],
             "impact": "naruszenie prawa do obrony"
         })
     return risks
 
-def detect_institutional_risk(extraction):
-    risks = []
-    if extraction.get("pressure_signals"):
-        risks.append({
-            "type": "institutional",
-            "subtype": "pressure",
-            "severity": "high",
-            "severity_score": 4,
-            "confidence": 0.8,
-            "evidence": ["presja instytucji"]
-        })
-    return risks
+def build_risk_for_all(extractions):
+    all_risks = []
 
-def build_risk(extraction):
-    risks = []
-    risks += detect_procedural_risk(extraction)
-    risks += detect_institutional_risk(extraction)
+    for extraction in extractions:
+        all_risks += detect_procedural_risk(extraction)
 
     global_risk = "low"
-    if any(r["severity"] == "critical" for r in risks):
+    if any(r["severity"] == "critical" for r in all_risks):
         global_risk = "high"
-    elif any(r["severity"] == "high" for r in risks):
+    elif any(r["severity"] == "high" for r in all_risks):
         global_risk = "medium"
 
     return {
         "risk_analysis": {
             "global_risk": global_risk,
-            "risks": risks
+            "risks": all_risks
         }
     }
 
-def main():
-    with open("output.json","r",encoding="utf-8") as f:
-        extraction = json.load(f)
+def load_extractions():
+    files = glob.glob("Legal-os/Akta-Spraw/**/Ekstrakcja_Danych/*.json", recursive=True)
+    data = []
 
-    risk = build_risk(extraction)
+    for fpath in files:
+        try:
+            with open(fpath, "r", encoding="utf-8") as f:
+                data.append(json.load(f))
+        except:
+            continue
+
+    return data
+
+def main():
+    extractions = load_extractions()
+
+    if not extractions:
+        print("No extraction files found")
+        return
+
+    risk = build_risk_for_all(extractions)
 
     with open("risk.json","w",encoding="utf-8") as f:
-        json.dump(risk,f,indent=2,ensure_ascii=False)
+        json.dump(risk,f, indent=2, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()
