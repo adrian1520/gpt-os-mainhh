@@ -1,0 +1,17 @@
+{
+  "system": {
+    "status": "INITIALIZED"
+  },
+  "knowledge": {},
+  "context": {
+    "system_context": {},
+    "session_log": []
+  },
+  "runtime": {
+    "live_session": {},
+    "case_memory": {}
+  },
+  "meta": {
+    "version": "1.0"
+  }
+}
