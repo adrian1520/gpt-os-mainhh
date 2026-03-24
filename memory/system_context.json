@@ -53,6 +53,7 @@
           "intake_spec.md",
           "parser_spec.md",
           "risk_model_v1.md",
+          "strategy_model_v1.md",
           "system_definition.md"
         ]
       }
