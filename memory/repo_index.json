@@ -189,6 +189,11 @@
         "context_builder.py",
         "repo_indexer.py"
       ]
+    },
+    "utils": {
+      "files": [
+        "fix_law_ids.py"
+      ]
     }
   },
   "outputs": {
