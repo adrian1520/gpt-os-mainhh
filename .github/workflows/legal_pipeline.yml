@@ -19,6 +19,9 @@ jobs:
           mkdir -p Legal-os/Outputs
           echo "{ \"run_id\": \"${{ github.run_id }}\", \"run_number\": \"${{ github.run_number }}\" }" > Legal-os/Outputs/run.json
 
+      - name: Fix Law IDs
+        run: python modules/utils/fix_law_ids.py
+
       - name: Run Parser V2
         run: python modules/agents/agent_parser_v2.py
 
