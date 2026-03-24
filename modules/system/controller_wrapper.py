@@ -1,6 +1,9 @@
 import json
 from pathlib import Path
 
+from modules.system.validate_context_bundle import validate_schema
+from modules.system.write_session_log import log_event
+
 BASE = Path(__file__).resolve().parents[2]
 
 BUNDLE_PATH = BASE / "memory/context_bundle.json"
@@ -16,19 +19,42 @@ def load_context_bundle():
 
 def controller(action_fn, *args, **kwargs):
     '''
-    Wrapper enforcing memory read before execution
+    Wrapper enforcing memory read + validation + logging
     '''
 
-    # 🔥 HARD ENFORCEMENT
+    # 🔥 LOAD
     context = load_context_bundle()
 
-    print("CONTEXT LOADED")
+    # 🔥 VALIDATE
+    validate_schema(context)
+
+    # 🔥 LOG START
+    log_event("controller_run_start", {
+        "action": action_fn.__name__
+    })
+
+    print("CONTEXT LOADED & VALID")
     print("Last update:", context.get("meta", {}).get("last_update"))
 
-    # pass context into action
-    result = action_fn(context, *args, **kwargs)
+    try:
+        result = action_fn(context, *args, **kwargs)
 
-    return result
+        # 🔥 LOG SUCCESS
+        log_event("controller_run_success", {
+            "action": action_fn.__name__
+        })
+
+        return result
+
+    except Exception as e:
+
+        # 🔥 LOG ERROR
+        log_event("controller_run_error", {
+            "action": action_fn.__name__,
+            "error": str(e)
+        })
+
+        raise
 
 
 # --- EXAMPLE USAGE ---
