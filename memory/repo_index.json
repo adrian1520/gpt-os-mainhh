@@ -37,11 +37,24 @@
     "Akta-Spraw": {
       "files": [
         ".gitkeep"
-      ]
+      ],
+      "AKTA_NSM_1180_24": {
+        "Pisma_Ori": {
+          "files": [
+            "postanowienie_prawomocnosc.md"
+          ]
+        }
+      }
     },
     "Biuro_Podawcze": {
       "files": [
         "README.md"
+      ]
+    },
+    "Outputs": {
+      "files": [
+        "case.json",
+        "run.json"
       ]
     },
     "system_LOSAI": {
