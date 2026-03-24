@@ -1,97 +1,26 @@
-name: Legal OS Pipeline (Full Intelligence)
 
-permissions:
-  contents: write
-
-on:
-  workflow_dispatch:
-  repository_dispatch:
-    types: [legal_intake]
-
-jobs:
-  pipeline:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Save run metadata
-        run: |
-          mkdir -p Legal-os/Outputs
-          echo "{ \"run_id\": \"${{ github.run_id }}\", \"run_number\": \"${{ github.run_number }}\" }" > Legal-os/Outputs/run.json
-
-      - name: Fix Law IDs
-        run: python modules/utils/fix_law_ids.py
-
-      - name: Run Parser V2
-        run: python modules/agents/agent_parser_v2.py
-
-      - name: Run Fact Engine
-        run: python modules/agents/agent_fact_engine.py
-
-      - name: Run Contradiction Engine
-        run: python modules/agents/agent_contradiction_engine.py
-
-      - name: Run Risk V2
-        run: python modules/agents/agent_risk_v2.py
-
-      - name: Run Strategy V2
-        run: python modules/agents/agent_strategy_v2.py
-
-      - name: Run Case Intelligence
-        run: python modules/agents/agent_case_intelligence.py
-
-      - name: Run Legal Action Engine
-        run: python modules/agents/agent_legal_action.py
-
-      - name: Run Counter Attack Engine
-        run: python modules/agents/agent_counter_attack.py
-
-      - name: Run Case Core
-        run: python modules/agents/agent_case_core_v1.py
-
-      - name: Build Context Bundle
-        run: python modules/system/build_context_bundle.py
-
-      - name: Update Case Memory
+      - name: Update Case Memory (FIXED PATHS)
         run: |
           python - <<EOF
-          from modules.system.case_memory_write import write_facts, write_law, write_risk, write_strategy
-          import json
+          from modules.system.case_memory_write import write_facts, write_risk, write_strategy
+          import json, os
 
-          try:
-              facts = json.load(open("facts.json"))
-              write_facts(facts.get("facts", []))
-          except: pass
+          def safe_load(path):
+              return json.load(open(path)) if os.path.exists(path) else None
 
-          try:
-              risk = json.load(open("risk.json"))
+          facts = safe_load("Legal-os/Outputs/facts.json")
+          if facts:
+              write_facts(facts)
+
+          risk = safe_load("Legal-os/Outputs/risk.json")
+          if risk:
               write_risk(risk.get("level"), risk.get("reason"))
-          except: pass
 
-          try:
-              strategy = json.load(open("strategy.json"))
-              write_strategy(strategy.get("plan", ""))
-          except: pass
+          strategy = safe_load("Legal-os/Outputs/strategy.json")
+          if strategy:
+              write_strategy(strategy.get("plan",""))
           EOF
 
-      - name: Save outputs
+      - name: Write Session Log
         run: |
-          mkdir -p Legal-os/Outputs
-          cp facts.json Legal-os/Outputs/facts.json || true
-          cp contradictions.json Legal-os/Outputs/contradictions.json || true
-          cp case_intelligence.json Legal-os/Outputs/case_intelligence.json || true
-          cp legal_action.md Legal-os/Outputs/legal_action.md || true
-          cp counter_attack.md Legal-os/Outputs/counter_attack.md || true
-          cp risk.json Legal-os/Outputs/risk.json || true
-          cp strategy.json Legal-os/Outputs/strategy.json || true
-          cp case.json Legal-os/Outputs/case.json || true
-          cp memory/context_bundle.json Legal-os/Outputs/context_bundle.json || true
-
-      - name: Commit & Push outputs
-        run: |
-          git config --global user.name "gpt-os-bot"
-          git config --global user.email "bot@gpt-os.local"
-          git add Legal-os/Outputs || true
-          git commit -m "auto: full pipeline outputs + context bundle" || echo "No changes"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          python modules/system/write_session_log.py
