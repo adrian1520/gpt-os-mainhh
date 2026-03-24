@@ -186,6 +186,7 @@
     },
     "system": {
       "files": [
+        "build_context_bundle.py",
         "context_builder.py",
         "repo_indexer.py"
       ]
