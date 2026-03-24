@@ -102,7 +102,8 @@
     "system_LOSAI": {
       "parser": {
         "files": [
-          "entity_extraction.json"
+          "entity_extraction.json",
+          "fact_engine_spec.json"
         ]
       },
       "files": [
