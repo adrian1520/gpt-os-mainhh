@@ -1,6 +1,7 @@
 # agent_strategy_v2.py
 
 import json
+import glob
 
 def detect_phase(risk):
     risks = risk.get("risk_analysis", {}).get("risks", [])
@@ -9,7 +10,20 @@ def detect_phase(risk):
             return "defense"
     return "monitoring"
 
-def build_strategy(extraction, risk):
+def load_extractions():
+    files = glob.glob("Legal-os/Akta-Spraw/**/Ekstrakcja_Danych/*.json", recursive=True)
+    data = []
+
+    for fpath in files:
+        try:
+            with open(fpath, "r", encoding="utf-8") as f:
+                data.append(json.load(f))
+        except:
+            continue
+
+    return data
+
+def build_strategy(extractions, risk):
     phase = detect_phase(risk)
 
     priorities = []
@@ -56,16 +70,19 @@ def build_strategy(extraction, risk):
     }
 
 def main():
-    with open("output.json","r",encoding="utf-8") as f:
-        extraction = json.load(f)
+    extractions = load_extractions()
 
-    with open("risk.json","r",encoding="utf-8") as f:
-        risk = json.load(f)
+    try:
+        with open("risk.json", "r", encoding="utf-8") as f:
+            risk = json.load(f)
+    except:
+        print("No risk.json found")
+        return
 
-    strategy = build_strategy(extraction, risk)
+    strategy = build_strategy(extractions, risk)
 
-    with open("strategy.json","w",encoding="utf-8") as f:
-        json.dump(strategy,f,indent=2,ensure_ascii=False)
+    with open("strategy.json", "w", encoding="utf-8") as f:
+        json.dump(strategy, f, indent=2, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()
