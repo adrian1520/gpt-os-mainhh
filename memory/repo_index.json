@@ -38,6 +38,11 @@
         ".gitkeep"
       ]
     },
+    "Biuro_Podawcze": {
+      "files": [
+        "README.md"
+      ]
+    },
     "system_LOSAI": {
       "files": [
         "system_definition.md"
