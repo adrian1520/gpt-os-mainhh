@@ -1,5 +1,11 @@
 {
-  "legal_state": "stable",
+  "legal_state": "final_decision_detected",
+  "facts_detected": [
+    "final_decision"
+  ],
   "contradictions": 0,
-  "recommended_action": "monitor"
+  "priority": "MEDIUM",
+  "recommended_actions": [
+    "verify procedural correctness"
+  ]
 }
