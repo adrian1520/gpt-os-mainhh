@@ -5,14 +5,14 @@ import glob
 from datetime import datetime
 
 def load_extractions():
-    files = glob.glob("Ekstrakcja_Danych/*.json")
+    files = glob.glob("Legal-os/Akta-Spraw/**/Ekstrakcja_Danych/*.json", recursive=True)
     data = []
     for f in files:
-        with open(f, "r", encoding="utf-8") as fh:
-            try:
+        try:
+            with open(f, "r", encoding="utf-8") as fh:
                 data.append(json.load(fh))
-            except:
-                continue
+        except:
+            continue
     return data
 
 def merge_documents(extractions):
@@ -35,7 +35,7 @@ def merge_events(extractions):
     for e in extractions:
         events += e.get("events", [])
     try:
-        events.sort(key=lambda x: x.get("date",""))
+        events.sort(key=lambda x: x.get("date", ""))
     except:
         pass
     return events
@@ -62,15 +62,15 @@ def build_case():
     }
 
     try:
-        with open("risk.json","r",encoding="utf-8") as f:
-            case["risk_analysis"] = json.load(f).get("risk_analysis",{})
+        with open("risk.json", "r", encoding="utf-8") as f:
+            case["risk_analysis"] = json.load(f).get("risk_analysis", {})
     except:
         pass
 
     try:
-        with open("strategy.json","r",encoding="utf-8") as f:
-            case["strategy"] = json.load(f).get("strategy",{})
-            case["case_state"]["phase"] = case["strategy"].get("phase","")
+        with open("strategy.json", "r", encoding="utf-8") as f:
+            case["strategy"] = json.load(f).get("strategy", {})
+            case["case_state"]["phase"] = case["strategy"].get("phase", "")
     except:
         pass
 
@@ -79,8 +79,8 @@ def build_case():
 def main():
     case = build_case()
 
-    with open("case.json","w","encoding="utf-8") as f:
-        json.dump(case,f,indent=2,ensure_ascii=False)
+    with open("case.json", "w", encoding="utf-8") as f:
+        json.dump(case, f, indent=2, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()
