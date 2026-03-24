@@ -37,6 +37,11 @@
       "files": [
         ".gitkeep"
       ]
+    },
+    "system_LOSAI": {
+      "files": [
+        "system_definition.md"
+      ]
     }
   },
   "cases": {
@@ -67,6 +72,7 @@
   },
   "memory": {
     "files": [
+      "audit_summary.md",
       "case_index.json",
       "context_loader.json",
       "error.json",
