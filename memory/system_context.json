@@ -108,8 +108,7 @@
       "law": {
         "kro": {
           "files": [
-            "kro.json",
-            "wladza_rodzicielska.json"
+            "kro.json"
           ]
         }
       }
