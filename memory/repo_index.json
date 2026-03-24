@@ -153,6 +153,7 @@
         "agent_chat.py",
         "agent_contradiction_engine.py",
         "agent_contradictions.py",
+        "agent_counter_attack.py",
         "agent_document_generator.py",
         "agent_document_legal.py",
         "agent_event_note.py",
