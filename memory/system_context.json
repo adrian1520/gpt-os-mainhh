@@ -52,6 +52,7 @@
           "extraction_v2_spec.md",
           "intake_spec.md",
           "parser_spec.md",
+          "risk_model_v1.md",
           "system_definition.md"
         ]
       }
