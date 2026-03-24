@@ -50,6 +50,7 @@
         "files": [
           "extraction_schema.json",
           "intake_spec.md",
+          "parser_spec.md",
           "system_definition.md"
         ]
       }
