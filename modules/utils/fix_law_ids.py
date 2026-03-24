@@ -27,7 +27,7 @@ def main():
         new_id = fix_id(old_id)
 
         if old_id != new_id:
-            print(f"{old_id} -> {new_id}")
+            print(f"{old_id} -> {new_id=}")
             item["id"] = new_id
             changed = True
 
