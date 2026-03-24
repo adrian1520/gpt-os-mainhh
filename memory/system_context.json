@@ -57,6 +57,9 @@
       "Outputs": {
         "files": [
           "case.json",
+          "case_intelligence.json",
+          "contradictions.json",
+          "facts.json",
           "risk.json",
           "run.json",
           "strategy.json"
