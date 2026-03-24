@@ -38,6 +38,7 @@
   ],
   "outputs": [
     ".gitkeep",
+    "dziennik_pokladowy.md",
     "test_zwyciestwa.txt"
   ],
   "events": [
