@@ -1,112 +1,136 @@
-# LEGAL-OS (LOSAI) — SYSTEM DEFINITION
+# LEGAL-OS (LOSAI) — SYSTEM DEFINITION (EXTENDED)
 
-## 1. CEL SYSTEMU
+## 1. CHARAKTER SYSTEMU
 
-Legal-OS (LOSAI) to system operacyjny dla spraw prawnych.
+System cyfrowych akt spraw prawnych z silnikami przetwarzającymi dokumenty.
 
-Jego celem jest:
-- zarządzanie sprawą jako całością
-- budowa cyfrowych akt sprawy
-- wspieranie analizy, strategii i dokumentów
-
-System ma działać jak:
-→ „operacyjny mózg sprawy prawnej”
+System łączy:
+- przetwarzanie dokumentów
+- analizę prawną
+- strategię procesową
+- zarządzanie sprawą
 
 ---
 
-## 2. DOMENA SYSTEMU
+## 2. KOMPONENTY SYSTEMU
 
-System operuje na domenie:
+### 1. 📂 Digital Case Files (Akta cyfrowe)
+- pełna struktura sprawy
+- dokumenty, fakty, timeline
 
-### CASE (SPRAWA)
+### 2. ⚙️ Processing Engines (Agenci)
+- parsery dokumentów
+- analiza faktów
+- budowa timeline
+- agregacja danych
 
-Sprawa to nadrzędna jednostka:
+### 3. ⚖️ Legal Knowledge Base
+- baza artykułów prawa (Polska)
+- struktura kodeksów (np. KRO)
 
-CASE =
-- strony (uczestnicy)
-- dokumenty
-- fakty
-- zdarzenia (timeline)
-- podstawa prawna
-- strategia
-- ryzyko
+### 4. ⚠️ Risk Analysis Engine
+- analiza ryzyka procesowego
+- wykrywanie braków i zagrożeń
 
----
+### 5. 🧠 Strategy Engine
+- rekomendacje działań
+- planowanie strategii procesowej
 
-## 3. STRUKTURA AKT (TARGET)
+### 6. 📝 Document Generation
+- generowanie pism procesowych
+- dynamiczne template
 
-Legal-os/Akta-Spraw/{CASE_ID}/
+### 7. 📊 Dashboard
+- widok sprawy
+- widok wielu spraw
+- status, ryzyko, działania
 
-├── case.json
-├── parties.json
-├── documents/
-├── timeline.json
-├── facts.json
-├── legal_basis.json
-├── risk.json
-├── strategy.json
-├── notes/
-└── outputs/
-
----
-
-## 4. KLUCZOWE OBIEKTY
-
-### 1. CASE
-Centralny obiekt systemu
-
-### 2. DOCUMENT
-Każdy dokument procesowy lub dowód
-
-### 3. EVENT
-Zdarzenie w sprawie (np. rozprawa)
-
-### 4. FACT
-Twierdzenie lub informacja
-
-### 5. LEGAL BASIS
-Powiązanie z przepisami
+### 8. 🤖 AI Layer (Custom GPT)
+- advisory system
+- interakcja z użytkownikiem
+- zarządzanie sprawą
+- inicjowanie agentów
 
 ---
 
-## 5. ROLA SYSTEMU
+## 3. ARCHITEKTURA SYSTEMU
 
-System NIE jest tylko parserem.
+System opiera się na:
+
+### 🔹 GitHub Repo
+- źródło prawdy (single source of truth)
+- runtime systemu
+- pamięć i archiwum
+
+### 🔹 CASE CORE
+- centralny model sprawy
+- wszystkie dane w jednym miejscu
+
+### 🔹 AGENT RUNTIME
+- GitHub Actions
+- event-driven execution
+
+### 🔹 CUSTOM GPT (ADVISORY)
+- zarządza systemem
+- inicjuje procesy
+- komunikuje się z użytkownikiem
+
+---
+
+## 4. ROLA SYSTEMU
+
+System pełni role:
+
+### 1. Zarządzanie sprawą
+- organizacja akt
+- kontrola stanu sprawy
+
+### 2. Prowadzenie sprawy
+- wsparcie działań procesowych
+- pilnowanie terminów
+
+### 3. Doradca prawny (advisory)
+- rekomendacje działań
+- interpretacja sytuacji
+
+### 4. Audyt akt
+- analiza kompletności
+- analiza proceduralna
+- tryb „biegłego sądowego”
+
+---
+
+## 5. MODEL OPERACYJNY
+
+Użytkownik → Custom GPT → Repo (CASE) → Agenci → Aktualizacja akt
+
+System działa jako:
+→ inteligentna warstwa nad aktami
+
+---
+
+## 6. DOCELOWA DOMENA
+
+### ⚖️ Jurysdykcja:
+POLSKA 🇵🇱
+
+### 🏛 Zakres:
+SĄD RODZINNY
+
+### 📚 Prawo:
+Prawo polskie
+- KRO
+- procedura cywilna
+- inne powiązane akty
+
+---
+
+## 7. KLUCZOWY WNIOSEK
+
+System NIE jest narzędziem.
 
 System jest:
 
-- zarządcą sprawy
-- budowniczym wiedzy
-- generatorem dokumentów
-- asystentem strategicznym
+→ OPERACYJNYM SYSTEMEM PROWADZENIA SPRAWY
 
----
-
-## 6. ROLA AGENTÓW
-
-Agenci NIE operują na eventach.
-
-Agenci operują na:
-
-→ CASE CORE
-
-Każdy agent:
-- czyta case.json
-- aktualizuje konkretną warstwę
-- zapisuje wynik do akt sprawy
-
----
-
-## 7. ARCHITEKTURA DOCELOWA
-
-INPUT → PARSER → DOCUMENT → CASE CORE → AGENTS → OUTPUT
-
----
-
-## 8. KLUCZOWY WNIOSEK
-
-Event sourcing pozostaje warstwą techniczną.
-
-Prawdziwy system działa na:
-
-→ MODELU SPRAWY (CASE CORE)
+→ CYFROWYM ODPOWIEDNIKIEM AKT SĄDOWYCH + INTELIGENCJA
