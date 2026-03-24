@@ -103,6 +103,11 @@
     },
     "legal-os": {
       "system_LOSAI": {
+        "parser": {
+          "files": [
+            "entity_extraction.json"
+          ]
+        },
         "files": [
           "parser_training_bundle.json"
         ]
