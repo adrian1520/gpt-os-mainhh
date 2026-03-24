@@ -37,6 +37,9 @@ jobs:
       - name: Run Case Intelligence
         run: python modules/agents/agent_case_intelligence.py
 
+      - name: Run Legal Action Engine
+        run: python modules/agents/agent_legal_action.py
+
       - name: Run Case Core
         run: python modules/agents/agent_case_core_v1.py
 
@@ -46,6 +49,7 @@ jobs:
           cp facts.json Legal-os/Outputs/facts.json || true
           cp contradictions.json Legal-os/Outputs/contradictions.json || true
           cp case_intelligence.json Legal-os/Outputs/case_intelligence.json || true
+          cp legal_action.md Legal-os/Outputs/legal_action.md || true
           cp risk.json Legal-os/Outputs/risk.json || true
           cp strategy.json Legal-os/Outputs/strategy.json || true
           cp case.json Legal-os/Outputs/case.json || true
