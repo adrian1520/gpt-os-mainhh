@@ -1,0 +1,40 @@
+{
+  "document_id": "string (uuid or hash)",
+  "case_id": "string (NSM_xxxx/yy)",
+  "signature": "string",
+  "document_type": "string",
+  "document_subtype": "string",
+  "date_created": "YYYY-MM-DD",
+  "date_received": "YYYY-MM-DD",
+  "parties": [
+    {
+      "role": "wnioskodawca | uczestnik | inne",
+      "name": "string",
+      "additional_info": "string"
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "string",
+      "content": "string",
+      "date_related": "YYYY-MM-DD",
+      "confidence": 0.0
+    }
+  ],
+  "requests": [
+    {
+      "content": "string"
+    }
+  ],
+  "legal_references": [
+    {
+      "code": "KRO",
+      "article": "string"
+    }
+  ],
+  "source_file": "path to original file",
+  "metadata": {
+    "created_at": "timestamp",
+    "processed_by": "agent_name"
+  }
+}
