@@ -49,6 +49,7 @@
       "system_LOSAI": {
         "files": [
           "extraction_schema.json",
+          "extraction_v2_spec.md",
           "intake_spec.md",
           "parser_spec.md",
           "system_definition.md"
