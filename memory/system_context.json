@@ -153,6 +153,7 @@
           "agent_document_generator.py",
           "agent_document_legal.py",
           "agent_event_note.py",
+          "agent_fact_engine.py",
           "agent_law_match.py",
           "agent_memory_update.py",
           "agent_parser_v2.py",
