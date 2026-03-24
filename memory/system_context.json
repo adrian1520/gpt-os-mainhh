@@ -111,7 +111,12 @@
         },
         "files": [
           "parser_training_bundle.json"
-        ]
+        ],
+        "reasoning": {
+          "files": [
+            "contradiction_engine_spec.json"
+          ]
+        }
       }
     },
     "memory": {
