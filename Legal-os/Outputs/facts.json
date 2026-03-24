@@ -1,6 +1,6 @@
 [
   {
-    "fact_id": "be8792f7-f672-4476-8496-96f085e834db",
+    "fact_id": "106401a9-0618-4f0c-a2e6-e76237c50cb0",
     "source": "Legal-os/Akta-Spraw/AKTA_NSM_1180_24/Ekstrakcja_Danych/postanowienie_prawomocnosc.json",
     "statement_raw": "stwierdzono prawomocność",
     "statement_normalized": "final_decision",
