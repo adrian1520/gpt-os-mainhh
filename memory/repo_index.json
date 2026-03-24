@@ -45,6 +45,7 @@
     },
     "system_LOSAI": {
       "files": [
+        "case_core_spec.md",
         "extraction_schema.json",
         "extraction_v2_spec.md",
         "intake_spec.md",
