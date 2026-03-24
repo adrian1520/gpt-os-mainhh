@@ -59,6 +59,7 @@
           "case.json",
           "case_intelligence.json",
           "contradictions.json",
+          "counter_attack.md",
           "facts.json",
           "legal_action.md",
           "risk.json",
@@ -103,6 +104,13 @@
           "art_57.json",
           "art_58.json"
         ]
+      },
+      "law": {
+        "kro": {
+          "files": [
+            "wladza_rodzicielska.json"
+          ]
+        }
       }
     },
     "legal-os": {
