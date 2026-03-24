@@ -193,6 +193,7 @@
       "system": {
         "files": [
           "build_context_bundle.py",
+          "build_gpt_context.py",
           "context_builder.py",
           "controller_wrapper.py",
           "repo_indexer.py",
