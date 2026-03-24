@@ -1,0 +1,43 @@
+{
+  "engine": "case_intelligence_v1",
+  "description": "Aggregates facts, risks and contradictions into legal state and decisions",
+  "inputs": {
+    "facts": "facts/facts.json",
+    "contradictions": "analysis/contradictions.json",
+    "risk": "risk.json",
+    "strategy": "strategy.json"
+  },
+  "outputs": {
+    "case_intelligence": "analysis/case_intelligence.json"
+  },
+  "core_logic": {
+    "rules": [
+      {
+        "condition": "delivery_issue AND final_decision",
+        "legal_state": "procedural_violation",
+        "severity": "CRITICAL",
+        "action": "file complaint / challenge validity"
+      },
+      {
+        "condition": "multiple_high_contradictions",
+        "legal_state": "evidence_conflict",
+        "severity": "HIGH",
+        "action": "request clarification / new evidence"
+      },
+      {
+        "condition": "no_contradictions AND low_risk",
+        "legal_state": "stable",
+        "severity": "LOW",
+        "action": "monitor"
+      }
+    ]
+  },
+  "output_schema": {
+    "legal_state": "string",
+    "violations": [],
+    "contradictions_summary": [],
+    "risk_level": "string",
+    "priority": "string",
+    "recommended_actions": []
+  }
+}
