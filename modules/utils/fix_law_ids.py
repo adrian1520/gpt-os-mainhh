@@ -6,7 +6,7 @@ def fix_id(old_id):
         return old_id
 
     # KRO_1136 → KRO_113_6
-    m = re.match(r'(KRO|KC|KPC)_(\d+ ?)(\d)$', old_id)
+    m = re.match(r'(KRO|KC|KPC)_(\d+?)(\d)$', old_id)
     if m:
         code, article, paragraph = m.groups()
         return f"{code}_{article}_{paragraph}"
