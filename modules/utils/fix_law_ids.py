@@ -2,11 +2,11 @@ import json
 import re
 
 def fix_id(old_id):
-    if not old_id:
+    if not isinstance(old_id, str):
         return old_id
 
     # KRO_1136 → KRO_113_6
-    m = re.match(r'(KRO|KC|KPC)_(\d+?)(\d)$', old_id)
+    m = re.match(r'(KRO|KC|KPC)_(\d+ ?)(\d)$', old_id)
     if m:
         code, article, paragraph = m.groups()
         return f"{code}_{article}_{paragraph}"
@@ -27,7 +27,7 @@ def main():
         new_id = fix_id(old_id)
 
         if old_id != new_id:
-            print(f"{old_id} -> {new_id=}")
+            print(f"{old_id} -> {new_id}")
             item["id"] = new_id
             changed = True
 
