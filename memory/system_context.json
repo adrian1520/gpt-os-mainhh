@@ -194,6 +194,7 @@
         "files": [
           "build_context_bundle.py",
           "build_gpt_context.py",
+          "case_memory_write.py",
           "context_builder.py",
           "controller_wrapper.py",
           "load_gpt_context.py",
