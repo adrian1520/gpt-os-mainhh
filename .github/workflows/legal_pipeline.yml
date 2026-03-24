@@ -1,0 +1,43 @@
+name: Legal OS Pipeline
+
+on:
+  push:
+    paths:
+      - "Legal-os/Akta-Spraw/**/Pisma_Ori/*"
+
+jobs:
+
+  parser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Parser V2
+        run: |
+          python modules/agents/agent_parser_v2.py
+
+  risk:
+    needs: parser
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Risk V2
+        run: |
+          python modules/agents/agent_risk_v2.py
+
+  strategy:
+    needs: risk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Strategy V2
+        run: |
+          python modules/agents/agent_strategy_v2.py
+
+  case_core:
+    needs: strategy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Case Core
+        run: |
+          python modules/agents/agent_case_core_v1.py
