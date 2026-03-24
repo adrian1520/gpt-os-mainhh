@@ -1,4 +1,4 @@
-name: Legal OS Pipeline (Event Driven + Persistence + Run Tracker)
+name: Legal OS Pipeline (Full Intelligence)
 
 permissions:
   contents: write
@@ -8,7 +8,6 @@ on:
     types: [legal_intake]
 
 jobs:
-
   pipeline:
     runs-on: ubuntu-latest
 
@@ -23,19 +22,30 @@ jobs:
       - name: Run Parser V2
         run: python modules/agents/agent_parser_v2.py
 
+      - name: Run Fact Engine
+        run: python modules/agents/agent_fact_engine.py
+
+      - name: Run Contradiction Engine
+        run: python modules/agents/agent_contradiction_engine.py
+
       - name: Run Risk V2
         run: python modules/agents/agent_risk_v2.py
 
       - name: Run Strategy V2
         run: python modules/agents/agent_strategy_v2.py
 
+      - name: Run Case Intelligence
+        run: python modules/agents/agent_case_intelligence.py
+
       - name: Run Case Core
         run: python modules/agents/agent_case_core_v1.py
 
-      - name: Save outputs to repo
+      - name: Save outputs
         run: |
           mkdir -p Legal-os/Outputs
-          cp output.json Legal-os/Outputs/output.json || true
+          cp facts.json Legal-os/Outputs/facts.json || true
+          cp contradictions.json Legal-os/Outputs/contradictions.json || true
+          cp case_intelligence.json Legal-os/Outputs/case_intelligence.json || true
           cp risk.json Legal-os/Outputs/risk.json || true
           cp strategy.json Legal-os/Outputs/strategy.json || true
           cp case.json Legal-os/Outputs/case.json || true
@@ -44,7 +54,6 @@ jobs:
         run: |
           git config --global user.name "gpt-os-bot"
           git config --global user.email "bot@gpt-os.local"
-
           git add Legal-os/Outputs || true
-          git commit -m "auto: pipeline outputs + run tracker" || echo "No changes"
-          git push
+          git commit -m "auto: full pipeline outputs" || echo "No changes"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
