@@ -1,4 +1,7 @@
-name: Legal OS Pipeline (Event Driven + Persistence)
+name: Legal OS Pipeline (Event Driven + Persistence + Run Tracker)
+
+permissions:
+  contents: write
 
 on:
   repository_dispatch:
@@ -11,6 +14,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Save run metadata
+        run: |
+          mkdir -p Legal-os/Outputs
+          echo "{ \"run_id\": \"${{ github.run_id }}\", \"run_number\": \"${{ github.run_number }}\" }" > Legal-os/Outputs/run.json
 
       - name: Run Parser V2
         run: python modules/agents/agent_parser_v2.py
@@ -38,5 +46,5 @@ jobs:
           git config --global user.email "bot@gpt-os.local"
 
           git add Legal-os/Outputs || true
-          git commit -m "auto: pipeline outputs update" || echo "No changes"
+          git commit -m "auto: pipeline outputs + run tracker" || echo "No changes"
           git push
