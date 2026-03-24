@@ -157,6 +157,7 @@
         "agent_event_note.py",
         "agent_fact_engine.py",
         "agent_law_match.py",
+        "agent_legal_action.py",
         "agent_memory_update.py",
         "agent_parser_v2.py",
         "agent_query.py",
