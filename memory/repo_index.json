@@ -24,6 +24,7 @@
         "auto_indexer.yml",
         "context_builder.yml",
         "event_note.yml",
+        "legal_pipeline.yml",
         "test_ping.yml",
         "write.yml"
       ]
