@@ -1,1 +1,33 @@
-on: []
+name: Memory Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'memory/**'
+      - 'modules/system/**'
+
+jobs:
+  memory:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Validate Context Bundle
+        run: python modules/system/validate_context_bundle.py
+
+      - name: Log Event (optional test)
+        run: python modules/system/write_session_log.py
+
+      - name: Rebuild Context Bundle
+        run: python modules/system/build_context_bundle.py
+
+      - name: Validate After Build
+        run: python modules/system/validate_context_bundle.py
