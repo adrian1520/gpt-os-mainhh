@@ -125,6 +125,7 @@
           "agent_risk_analysis.py",
           "agent_risk_v2.py",
           "agent_strategy.py",
+          "agent_strategy_v2.py",
           "agent_summary.py",
           "agent_timeline.py",
           "legal_advisor.py",
