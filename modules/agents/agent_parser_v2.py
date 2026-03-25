@@ -4,7 +4,7 @@ import glob
 import os
 
 
-BASE = os.path.join(os.getcwd(), "Legal-os", "Akta-Spraw")
+BASE = "Legal-os/Akta-Spraw"
 
 
 def extract_signature(text):
@@ -48,7 +48,7 @@ def build_extraction(text):
 
 def main():
     if not os.path.exists(BASE):
-        print(f"No Akta-Spraw at {BASe}")
+        print(f"No Akta-Spraw at {BASE}")
         return
 
     pattern = os.path.join(BASE, "**/Pisma_Ori/*.md")
@@ -66,14 +66,13 @@ def main():
 
         extraction = build_extraction(text)
 
-        out_path = file_path.replace("Pisma_Ori", "Ekstrakcja_Danych").replace(".md", ".json")
+        out_path = file_path.replace("Pisma_Ori","Ekstrakcja_Danych").replace(".md", ".json")
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
         print(f"WRITE: {out_path}")
 
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(extraction, f, indent=2, ensure_ascii=False)
-
 
 if __name__ == "__main__":
     main()
