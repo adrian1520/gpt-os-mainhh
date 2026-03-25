@@ -3,7 +3,8 @@ import json
 import time
 
 
-BASE_PATH = os.path.join(os.getcwd(), "Legal-os", "cases")
+# Store case state at repo root for consistent GitHub Actions behavior
+BASE_PATH = "cases"
 
 
 def sanitize(case_id):
