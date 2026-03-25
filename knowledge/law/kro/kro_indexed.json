@@ -1,0 +1,17 @@
+{
+  "index": {
+    "parental_authority": ["KRO_92", "KRO_93_1"]
+  },
+  "articles": {
+    "KRO_92": {
+      "tags": ["family_law", "parental_authority_duration"],
+      "templates": ["Zgodnie z art. 92 k.r.o. dziecko pozostaje aż do płnoletności pod władzą rodzicielską."],
+      "importance": 5
+    },
+    "KRO_93_1": {
+      "tags": ["family_law", "parental_authority_entitlement"],
+      "templates": ["Zgodnie z art. 93 §1 k.r.o. władza rodzicielska przysługuje obojgu rodzicom."],
+      "importance": 5
+    }
+  }
+}
