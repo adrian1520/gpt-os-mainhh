@@ -44,7 +44,7 @@ def process_case(case_id, files):
                     "source": f,
                     "statement_raw": fact.get("content", ""),
                     "statement_normalized": norm,
-                    "polarity": pol
+                    "polarity": pon
                 })
 
         state["facts"] = facts
@@ -61,7 +61,7 @@ def main():
         case_path = os.path.join(base, case)
         if not os.path.isdir(case_path):
             continue
-        files = glob.glob(os.path.join(case_path, "**/Ekstrackcja_Danych/*.json"), recursive=True)
+        files = glob.glob(os.path.join(case_path, "**/Ekstracjcja_Danych/*.json"), recursive=True)
         if not files:
             continue
         process_case(case, files)
