@@ -18,16 +18,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Detect input file
-        id: detect
-        run: |
-          FILE=$(ls Legal-os/Biuro_Podawcze | head -n 1)
-          echo "file=$FILE" >> $GITHUB_OUTPUT
+      - name: Register case (Biuro → Akta)
+        run: python modules/system/register_case.py
 
       - name: Run parser
-        run: |
-          python modules/agents/agent_parser_v2.py \
-            "Legal-os/Biuro_Podawcze/${{ steps.detect.outputs.file }}"
+        run: python modules/agents/agent_parser_v2.py
 
       - name: Extract facts
         run: python modules/agents/agent_fact_engine.py
