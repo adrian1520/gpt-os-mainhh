@@ -1,12 +1,6 @@
 import json
 import os
 
-try:
-    from openai import OpenAI
-    client = OpenAI()
-except:
-    client = None
-
 LAW_PATH = "knowledge/law/kro/kro_indexed.json"
 
 def detect_tags(facts):
@@ -21,66 +15,39 @@ def detect_tags(facts):
             tags.add("restriction")
     return list(tags)
 
-def detect_contradictions(facts):
-    contradictions = []
-    texts = [f.get("content", "").lower() for f in facts]
+def simulate_multi(tags, contradictions):
+    scenarios = []
 
-    if any("brak kontakt" in t for t in texts) and any("kontakt" in t and "brak" not in t for t in texts):
-        contradictions.append("Sprzeczne informacje o kontactach")
+    scenarios.append({
+        "name": "optimistic",
+        "outcome": "Korzystny wykrok dla strony",
+        "probability": 0.8
+    })
 
-    return contradictions
+    scenarios.append({
+        "name": "realistic",
+        "outcome": "Sad ewentualnie ustali contakty lub ograniczenie",
+        "probability": 0.6
+    })
 
-
-def simulate_outcome(tags, contradictions):
-    result = {}
-
-    if "restriction" in tags:
-        result["outcome"] = "Mozliwe ograniczenie władzy rodzicielskiej"
-        result["probability"] = 0.7
-
-    elif "contact" in tags:
-        result["outcome"] = "Sad ustali kontacty"
-        result["probability"] = 0.8
-
-    else:
-        result["outcome"] = "Brak jownego strania"
-        result["probability"] = 0.5
+    scenarios.append({
+        "name": "pessymistic",
+        "outcome": "Niekorzystny wykrok (ograniczenie)",
+        "probability": 0.4
+    })
 
     if contradictions:
-        result["probability"] -= 0.2
+        for sc in scenarios:
+            sc["probability"] -= 0.1
 
-    return result
-
-
-def load_law():
-    if os.path.exists(LAW_PATH):
-        with open(LAW_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
-
-def build_arguments(tags, law_data):
-    args = []
-    index = law_data.get("index", {})
-    articles = law_data.get("articles", {})
-
-    for tag in tags:
-        for aid in index.get(tag, []):
-            art = articles.get(aid, {})
-            temps = art.get("templates", [])
-            if temps:
-                args.append(temps[0])
-    return args
+    return scenarios
 
 
 def build_reasoning(data):
-    law_data = load_law()
-
     output = {
         "tags": [],
         "contradictions": [],
-        "arguments": [],
-        "strategy": [],
-        "outcome": {}
+        "multi_scenario": []
     }
 
     facts = data.get("facts", [])
@@ -88,13 +55,9 @@ def build_reasoning(data):
     tags = detect_tags(facts)
     output["tags"] = tags
 
-    contra = detect_contradictions(facts)
+    contra = []
     output["contradictions"] = contra
 
-    output["arguments"] = build_arguments(tags, law_data)
-
-    output"strategy"] = []
-    
-    output["outcome"] = simulate_outcome(tags, contra)
+    output["multi_scenario"] = simulate_multi(tags, contra)
 
     return output
