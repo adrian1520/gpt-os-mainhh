@@ -28,30 +28,33 @@ def detect_contradictions(facts):
     if any("brak kontakt" in t for t in texts) and any("kontakt" in t and "brak" not in t for t in texts):
         contradictions.append("Sprzeczne informacje o kontactach")
 
-    if any("pozbawienie władzq" in t for t in texts) && any("posiada władzę" in t for t in texts):
-        contradictions.append("Sprzeczne informacje ob władzy rodzicielskiej")
-
     return contradictions
 
 
-def build_strategy(tags, contradictions):
-    strategy = []
-
-    if "contact" in tags:
-        strategy.append("Ustali regularne kontacty lub egzekwoau je ródnie")
+def simulate_outcome(tags, contradictions):
+    result = {}
 
     if "restriction" in tags:
-        strategy.append("Przygotuj obrone przeciw ograniczeniu władzy")
+        result["outcome"] = "Mozliwe ograniczenie władzy rodzicielskiej"
+        result["probability"] = 0.7
+
+    elif "contact" in tags:
+        result["outcome"] = "Sad ustali kontacty"
+        result["probability"] = 0.8
+
+    else:
+        result["outcome"] = "Brak jownego strania"
+        result["probability"] = 0.5
 
     if contradictions:
-        strategy.append("Wykorzystaj sprzeczno�ści kup wrosnowi wiarygodnoěci strony")
+        result["probability"] -= 0.2
 
-    return strategy
+    return result
 
 
 def load_law():
     if os.path.exists(LAW_PATH):
-        with open(LAW_PATH), "r", encoding="utf-8") as f:
+        with open(LAW_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
@@ -68,34 +71,16 @@ def build_arguments(tags, law_data):
                 args.append(temps[0])
     return args
 
-def llm_inference(data):
-    if not client:
-        return {"insights": [], "recommendations": []}
-
-    prompt = f"Analyze legal case and provide strategy."
-
-    try:
-        resp = client.chat.completions.create(
-            model= "gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        text = resp.choices[0].message.content
-        return {"insights": [text]}
-    except:
-        return {"insights": ["LLM error"]}
-
 
 def build_reasoning(data):
     law_data = load_law()
 
     output = {
-        "insights": [],
-        "risks": [],
-        "recommendations": [],
-        "arguments": [],
         "tags": [],
         "contradictions": [],
-        "strategy": []
+        "arguments": [],
+        "strategy": [],
+        "outcome": {}
     }
 
     facts = data.get("facts", [])
@@ -106,15 +91,10 @@ def build_reasoning(data):
     contra = detect_contradictions(facts)
     output["contradictions"] = contra
 
-    output["strategy"] = build_strategy(tags, contra)
+    output["arguments"] = build_arguments(tags, law_data)
 
-    arguments = build_arguments(tags, law_data)
-    output["arguments"] = arguments
-
-    llm_res = llm_inference(data)
-    output["insights"].extend(llm_res.get("insights", []))
-
-    if "restriction" in tags:
-        output["risks"].append("High risk intervention")
+    output"strategy"] = []
+    
+    output["outcome"] = simulate_outcome(tags, contra)
 
     return output
