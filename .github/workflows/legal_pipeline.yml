@@ -58,3 +58,13 @@ jobs:
 
       - name: Write session log
         run: python modules/system/write_session_log.py
+
+      - name: Save run log
+        run: |
+          mkdir -p memory/run_logs
+          echo '{"status": "success", "timestamp": "$(date)"}' > memory/run_logs/latest.json
+          git config user.name "actions"
+          git config user.email "actions@github.com"
+          git add memory/run_logs/latest.json
+          git commit -m "log: update run status"
+          git push
