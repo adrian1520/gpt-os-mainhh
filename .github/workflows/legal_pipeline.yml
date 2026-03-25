@@ -44,6 +44,14 @@ jobs:
       - name: Master aggregator
         run: python modules/agents/master_aggregator.py
 
+      - name: Save case state
+        run: |
+          git config user.name "actions"
+          git config user.email "actions@github.com"
+          git add Legal-os/cases || echo "no cases"
+          git commit -m "case_state: update" || echo "no changes"
+          git push || echo "nothing to push"
+
       - name: Update case memory
         run: python modules/system/case_memory_write.py
 
