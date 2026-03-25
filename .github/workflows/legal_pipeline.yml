@@ -2,8 +2,7 @@ name: Legal Pipeline
 
 on:
   push:
-    paths:
-      - 'Legal-os/Biuro_Podawcze/**'
+  workflow_dispatch:
 
 jobs:
   process-legal-case:
