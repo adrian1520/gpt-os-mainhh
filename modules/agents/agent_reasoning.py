@@ -1,7 +1,6 @@
 import json
 import os
 
-# Optional LLM integration
 try:
     from openai import OpenAI
     client = OpenAI()
@@ -10,8 +9,6 @@ except:
 
 LAW_PATH = "knowledge/law/kro/kro_indexed.json"
 
-
-# auto tagging
 def detect_tags(facts):
     tags = set()
     for f in facts:
@@ -24,13 +21,11 @@ def detect_tags(facts):
             tags.add("restriction")
     return list(tags)
 
-
 def load_law():
     if os.path.exists(LAW_PATH):
-        with open(LAW_PATH), "r", encoding="utf-8") as f:
+        with open(LAW_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
-
 
 def build_arguments(tags, law_data):
     args = []
@@ -45,20 +40,42 @@ def build_arguments(tags, law_data):
                 args.append(temps[0])
     return args
 
-
 def llm_inference(data):
     if not client:
         return {"insights": [], "recommendations": []}
 
-    prompt = f""Analyze the legal case: {data} and provide insights and recommendations.""
+    prompt = f"""
+Role: You are a Polish family lawer and court analyst.
+
+Input data:
+{json.dumps(data, ensure_ascii=False)}
+
+
+Tasks:
+1. Identify the legal issues.
+2. Assess the risks (procedural, factual, strategic).
+3. Indicate which party has a good position.
+4. Propose concrete legal actions.
+2. Note potential contradictions.
+
+Respond in structured JSON:
+ {
+  "insights": [...],
+  "risks": [...],
+  "recommendations": [...]
+ }
+"""
 
     try:
         resp = client.chat.completions.create(
-            model= "gpt-4o-mini",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}]
         )
         text = resp.choices[0].message.content
-        return {"insights": [text], "recommendations": []}
+        try:
+            return json.loads(text)
+        except:
+            return {"insights": [text], "recommendations": []}
     except:
         return {"insights": ["LLM error"], "recommendations": []}
 
