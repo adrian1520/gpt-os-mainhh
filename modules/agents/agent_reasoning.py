@@ -34,6 +34,21 @@ def detect_contradictions(facts):
     return contradictions
 
 
+def build_strategy(tags, contradictions):
+    strategy = []
+
+    if "contact" in tags:
+        strategy.append("Ustali regularne kontacty lub egzekwoau je ródnie")
+
+    if "restriction" in tags:
+        strategy.append("Przygotuj obrone przeciw ograniczeniu władzy")
+
+    if contradictions:
+        strategy.append("Wykorzystaj sprzeczno�ści kup wrosnowi wiarygodnoěci strony")
+
+    return strategy
+
+
 def load_law():
     if os.path.exists(LAW_PATH):
         with open(LAW_PATH), "r", encoding="utf-8") as f:
@@ -57,38 +72,15 @@ def llm_inference(data):
     if not client:
         return {"insights": [], "recommendations": []}
 
-    prompt = f"""
-Role: You are a Polish family lawer and court analyst.
+    prompt = f"Analyze legal case and provide strategy."
 
-Input data:
-{json.dumps(data, ensure_ascii=False)}
-
-
-Tasks:
-1. Identify the legal issues.
-2. Assess the risks (procedural, factual, strategic).
-3. Indicate which party has a good position.
-4. Propose concrete legal actions.
-2. Note contradictions and inconsistencies.
-
-Respond in structured JSON:
-{
-  "insights": [...],
-  "risks": [...],
-  "recommendations": [...],
-  "contradictions": [...]
-}
-"""
     try:
         resp = client.chat.completions.create(
             model= "gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}]
         )
         text = resp.choices[0].message.content
-        try:
-            return json.loads(text)
-        except:
-            return {"insights": [text]}
+        return {"insights": [text]}
     except:
         return {"insights": ["LLM error"]}
 
@@ -102,7 +94,8 @@ def build_reasoning(data):
         "recommendations": [],
         "arguments": [],
         "tags": [],
-        "contradictions": []
+        "contradictions": [],
+        "strategy": []
     }
 
     facts = data.get("facts", [])
@@ -110,19 +103,18 @@ def build_reasoning(data):
     tags = detect_tags(facts)
     output["tags"] = tags
 
-    output["contradictions"] = detect_contradictions(facts)
+    contra = detect_contradictions(facts)
+    output["contradictions"] = contra
+
+    output["strategy"] = build_strategy(tags, contra)
 
     arguments = build_arguments(tags, law_data)
     output["arguments"] = arguments
 
     llm_res = llm_inference(data)
     output["insights"].extend(llm_res.get("insights", []))
-    output["recommendations"].extend(llm_res.get("recommendations", []))
 
     if "restriction" in tags:
         output["risks"].append("High risk intervention")
-
-    if "contact" in tags:
-        output["insights"].append("Contact issue detected")
 
     return output
