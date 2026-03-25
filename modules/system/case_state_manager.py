@@ -3,7 +3,7 @@ import json
 import time
 
 
-BASE_PATH = "Legal-os/cases"
+BASE_PATH = os.path.join(os.getcwd(), "Legal-os", "cases")
 
 
 def sanitize(case_id):
