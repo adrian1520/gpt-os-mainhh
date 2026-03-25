@@ -1,26 +1,60 @@
+name: Legal Pipeline
 
-      - name: Update Case Memory (FIXED PATHS)
+on:
+  push:
+    paths:
+      - 'Legal-os/Biuro_Podawcze/**'
+
+jobs:
+  process-legal-case:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Detect input file
+        id: detect
         run: |
-          python - <<EOF
-          from modules.system.case_memory_write import write_facts, write_risk, write_strategy
-          import json, os
+          FILE=$(ls Legal-os/Biuro_Podawcze | head -n 1)
+          echo "file=$FILE" >> $GITHUB_OUTPUT
 
-          def safe_load(path):
-              return json.load(open(path)) if os.path.exists(path) else None
-
-          facts = safe_load("Legal-os/Outputs/facts.json")
-          if facts:
-              write_facts(facts)
-
-          risk = safe_load("Legal-os/Outputs/risk.json")
-          if risk:
-              write_risk(risk.get("level"), risk.get("reason"))
-
-          strategy = safe_load("Legal-os/Outputs/strategy.json")
-          if strategy:
-              write_strategy(strategy.get("plan",""))
-          EOF
-
-      - name: Write Session Log
+      - name: Run parser
         run: |
-          python modules/system/write_session_log.py
+          python modules/agents/agent_parser_v2.py \
+            "Legal-os/Biuro_Podawcze/${{ steps.detect.outputs.file }}"
+
+      - name: Extract facts
+        run: python modules/agents/agent_fact_engine.py
+
+      - name: Build relations
+        run: python modules/agents/agent_relations.py
+
+      - name: Risk analysis
+        run: python modules/agents/agent_risk_v2.py
+
+      - name: Strategy
+        run: python modules/agents/agent_strategy_v2.py
+
+      - name: Legal action
+        run: python modules/agents/agent_legal_action.py
+
+      - name: Aggregate outputs
+        run: python modules/agents/agent_aggregator.py
+
+      - name: Update case memory
+        run: python modules/system/case_memory_write.py
+
+      - name: Build context bundle
+        run: python modules/system/build_context_bundle.py
+
+      - name: Validate context
+        run: python modules/system/validate_context_bundle.py
+
+      - name: Write session log
+        run: python modules/system/write_session_log.py
