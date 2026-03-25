@@ -1,6 +1,13 @@
 import json
 import os
 
+# Optional LLM integration
+try:
+    from openai import OpenAI
+    client = OpenAI()
+except:
+    client = None
+
 LAW_PATH = "knowledge/law/kro/kro_indexed.json"
 
 
@@ -27,7 +34,7 @@ def load_law():
 
 def build_arguments(tags, law_data):
     args = []
-    index = law_data.get("index", {})    
+    index = law_data.get("index", {})
     articles = law_data.get("articles", {})
 
     for tag in tags:
@@ -37,6 +44,23 @@ def build_arguments(tags, law_data):
             if temps:
                 args.append(temps[0])
     return args
+
+
+def llm_inference(data):
+    if not client:
+        return {"insights": [], "recommendations": []}
+
+    prompt = f""Analyze the legal case: {data} and provide insights and recommendations.""
+
+    try:
+        resp = client.chat.completions.create(
+            model= "gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        text = resp.choices[0].message.content
+        return {"insights": [text], "recommendations": []}
+    except:
+        return {"insights": ["LLM error"], "recommendations": []}
 
 
 def build_reasoning(data):
@@ -53,10 +77,14 @@ def build_reasoning(data):
     facts = data.get("facts", [])
 
     tags = detect_tags(facts)
-    output["retags"] = tags
+    output["tags"] = tags
 
     arguments = build_arguments(tags, law_data)
     output["arguments"] = arguments
+
+    llm_res = llm_inference(data)
+    output["insights"].extend(llm_res.get("insights", []))
+    output["recommendations"].extend(llm_res.get("recommendations", []))
 
     if "restriction" in tags:
         output["risks"].append("High risk intervention")
