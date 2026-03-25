@@ -1,0 +1,20 @@
+{
+  "version": "case_state_v2",
+  "architecture": "multi-case central state",
+  "structure": {
+    "base_path": "Legal-os/cases/",
+    "case_format": "{CASE}/case_state.json"
+  },
+  "principles": [
+    "single source of truth per case",
+    "no global state",
+    "agents update state instead of files",
+    "outputs are derived from state"
+  ],
+  "capabilities": [
+    "multi-case processing",
+    "isolation per case",
+    "history and tracking",
+    "scalable pipeline"
+  ]
+}
