@@ -12,7 +12,7 @@ if not os.path.exists(EVENTS_DIR):
 else:
     events = [f for f in os.listdir(EVENTS_DIR) if f.endswith(".json")]
 
-griouped = {}
+grouped = {}
 
 for f in events:
     try:
@@ -27,7 +27,7 @@ for f in events:
 
 aggregates = []
 
-for eid, events in grouped.items():
+for eid, evs in grouped.items():
     agg = {
         "id": eid,
         "sygnatura": None,
@@ -35,16 +35,14 @@ for eid, events in grouped.items():
         "document_type": None
     }
 
-    for e in events:
-        if e.get("type") == "parser_sygnature":
-            agg["sygnatura"] = e.get("sygnatura")
+    for e in evs:
+        if e.get("type") == "parser_signature":
+            agg["sygnatura"] = e.get("signatura")
         elif e.get("type") == "parser_dates":
             agg["dates"] = e.get("dates", [])
         elif e.get("type") == "parser_typ_pisma":
             agg["document_type"] = e.get("document_type")
-
     aggregates.append(agg)
-
 result = {
     "timestamp": int(time.time()),
     "type": "agent_aggregator",
