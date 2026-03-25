@@ -13,22 +13,42 @@ def main():
     input_dir = "Legal-os/Biuro_Podawcze"
     out_root = "Legal-os/Akta-Spraw"
 
-    for file in os.listdir(input_dir):
+    if not os.path.exists(input_dir):
+        print("No Biuro_Podawcze directory - skip")
+        return
+
+    files = os.listdir(input_dir)
+    if not files:
+        print("No files in Biuro_Podawcze - skip")
+        return
+
+    for file in files:
         path = os.path.join(input_dir, file)
         if not os.path.isfile(path):
             continue
 
-        with open(path, "r", encoding="utf-8") as f:
-            text = f.read()
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                text = f.read()
+        except Exception as e:
+            print(f"Error reading {file}: {e}")
+            continue
 
         sig = extract_signature(text)
-        sig_clean = sanitize(sig)
+        if sig == "UNKNOWN": 
+            print(f"Skip {file} - no signature")
+            continue
 
+        sig_clean = sanitize(sig)
         case_dir = os.path.join(out_root, sig_clean, "Pisma_Ori")
         os.makedirs(case_dir, exist_ok=True)
 
         out_path = os.path.join(case_dir, file.replace(".txt", ".md"))
-        shutil.copy(path, out_path)
+        try:
+            shutil.copy(path, out_path)
+        except Exception as e:
+            print(f"Error copying {file}: {e}")
+            continue
 
         print(f"Registered: {file} -> {sig_clean}")
 
