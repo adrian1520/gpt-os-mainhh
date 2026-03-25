@@ -27,13 +27,16 @@ def normalize(statement):
     return "unknown", "neutral"
 
 def process_case(case_id, files):
+    print(f"PROCESS_CASE = {case_id}")
     def updater(state):
         facts = state.get("facts", [])
 
         for f in files:
+            print(f"READING FILE: {f}")
             try:
                 data = json.load(open(f, encoding="utf-8"))
             except:
+                print(f"ERROR READING {f}")
                 continue
 
             for fact in data.get("facts", []):
@@ -44,28 +47,38 @@ def process_case(case_id, files):
                     "source": f,
                     "statement_raw": fact.get("content", ""),
                     "statement_normalized": norm,
-                    "polarity": pon
+                    "polarity": pol
                 })
 
         state["facts"] = facts
         return state
 
+    print("UPDATING STATE")
     update_state(case_id, updater)
 
 def main():
     base = "Legal-os/Akta-Spraw"
     if not os.path.exists(base):
-        print("No Akta - skip")
+        print("No Acta - skip")
         return
+
     for case in os.listdir(base):
         case_path = os.path.join(base, case)
         if not os.path.isdir(case_path):
             continue
-        files = glob.glob(os.path.join(case_path, "**/Ekstracjcja_Danych/*.json"), recursive=True)
+
+        print(f"CASE: {case}")
+
+        files = glob.glob(os.path.join(case_path, "**/Ekstraccja_Danych/*.json"), recursive=True)
+
+        print(f"FILES: {files}")
+
         if not files:
+            print("NO FILES - SKIP")
             continue
+
         process_case(case, files)
-        print(f"Facts updated for {case}")
+        print(f"FACTS UPDATED FOR {case}")
 
 if __name__ == "__main__":
     main()
