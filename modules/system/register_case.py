@@ -2,11 +2,11 @@ import os
 import re
 import shutil
 
-def extract_signatura(text):
+def extract_signature(text):
     match = re.search(r'[IVX]+ Nsm \d+/\d+', text)
     return match.group(0) if match else "UNKNOWN"
 
-def sanitize(signatura):
+def sanitize(signature):
     return signature.replace(" ", "_").replace("/", "_")
 
 def main():
