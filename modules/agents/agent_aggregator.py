@@ -3,15 +3,18 @@ import os
 import time
 
 EVENTS_DIR = "events"
-OUTPUT_DIR = "events"
+OUTPUT_DIR = "Legal-os/Outputs"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-files = [f for f in os.listdir(EVENTS_DIR) if f.endswith(".json")]
+if not os.path.exists(EVENTS_DIR):
+    events = []
+else:
+    events = [f for f in os.listdir(EVENTS_DIR) if f.endswith(".json")]
 
-grouped = {}
+griouped = {}
 
-for f in files:
+for f in events:
     try:
         with open(os.path.join(EVENTS_DIR, f)) as file:
             data = json.load(file)
@@ -33,7 +36,7 @@ for eid, events in grouped.items():
     }
 
     for e in events:
-        if e.get("type") == "parser_sygnatur":
+        if e.get("type") == "parser_sygnature":
             agg["sygnatura"] = e.get("sygnatura")
         elif e.get("type") == "parser_dates":
             agg["dates"] = e.get("dates", [])
@@ -49,7 +52,7 @@ result = {
     "count": len(aggregates)
 }
 
-filename = f"{OUTPUT_DIR}/event_aggregate_{int(time.time())}.json"
+filename = f"{OUTPUT_DIR}/aggregate_{int(time.time())}.json"
 
 with open(filename, "w") as f:
     json.dump(result, f)
