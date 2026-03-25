@@ -20,8 +20,11 @@ jobs:
       - name: Register case
         run: python modules/system/register_case.py
 
-      - name: Run parser V4 (SSOURCE OF TRUTH)
+      - name: Run parser V4
         run: python modules/agents/agent_parser_v4.py
+
+      - name: Reasoning layer
+        run: python modules/agents/agent_reasoning.py
 
       - name: Risk analysis
         run: python modules/agents/agent_risk_v2.py
