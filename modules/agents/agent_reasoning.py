@@ -21,9 +21,22 @@ def detect_tags(facts):
             tags.add("restriction")
     return list(tags)
 
+def detect_contradictions(facts):
+    contradictions = []
+    texts = [f.get("content", "").lower() for f in facts]
+
+    if any("brak kontakt" in t for t in texts) and any("kontakt" in t and "brak" not in t for t in texts):
+        contradictions.append("Sprzeczne informacje o kontactach")
+
+    if any("pozbawienie władzq" in t for t in texts) && any("posiada władzę" in t for t in texts):
+        contradictions.append("Sprzeczne informacje ob władzy rodzicielskiej")
+
+    return contradictions
+
+
 def load_law():
     if os.path.exists(LAW_PATH):
-        with open(LAW_PATH, "r", encoding="utf-8") as f:
+        with open(LAW_PATH), "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
@@ -56,28 +69,28 @@ Tasks:
 2. Assess the risks (procedural, factual, strategic).
 3. Indicate which party has a good position.
 4. Propose concrete legal actions.
-2. Note potential contradictions.
+2. Note contradictions and inconsistencies.
 
 Respond in structured JSON:
- {
+{
   "insights": [...],
   "risks": [...],
-  "recommendations": [...]
- }
+  "recommendations": [...],
+  "contradictions": [...]
+}
 """
-
     try:
         resp = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model= "gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}]
         )
         text = resp.choices[0].message.content
         try:
             return json.loads(text)
         except:
-            return {"insights": [text], "recommendations": []}
+            return {"insights": [text]}
     except:
-        return {"insights": ["LLM error"], "recommendations": []}
+        return {"insights": ["LLM error"]}
 
 
 def build_reasoning(data):
@@ -88,13 +101,16 @@ def build_reasoning(data):
         "risks": [],
         "recommendations": [],
         "arguments": [],
-        "tags": []
+        "tags": [],
+        "contradictions": []
     }
 
     facts = data.get("facts", [])
 
     tags = detect_tags(facts)
     output["tags"] = tags
+
+    output["contradictions"] = detect_contradictions(facts)
 
     arguments = build_arguments(tags, law_data)
     output["arguments"] = arguments
