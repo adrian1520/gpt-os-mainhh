@@ -1,9 +1,0 @@
-{
-  "schema": "entities",
-  "fields": [
-    "person",
-    "case",
-    "institution",
-    "role"
-  ]
-}
