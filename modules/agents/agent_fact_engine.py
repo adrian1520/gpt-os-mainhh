@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.getcwd())
+
 import json, glob, uuid
 import os
 from modules.system.case_state_manager import update_state
