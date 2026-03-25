@@ -13,6 +13,9 @@
     "last_events": "trimmed",
     "active": true
   },
+  "knowledge": {
+    "modules": "active"
+  },
   "instructions": [
     "use case_memory as primary source",
     "prioritize latest facts over raw inputs",
