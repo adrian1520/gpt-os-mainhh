@@ -41,6 +41,9 @@ jobs:
       - name: Aggregate outputs
         run: python modules/agents/agent_aggregator.py
 
+      - name: Master aggregator
+        run: python modules/agents/master_aggregator.py
+
       - name: Update case memory
         run: python modules/system/case_memory_write.py
 
@@ -56,7 +59,7 @@ jobs:
       - name: Save run log
         run: |
           mkdir -p memory/run_logs
-          echo '{"status": "success", "timestamp": "$(date)"}' > memory/run_logs/latest.json
+          echo '{"status": "success", "timestamp": "$(date)" }' > memory/run_logs/latest.json
           git config user.name "actions"
           git config user.email "actions@github.com"
           git add memory/run_logs/latest.json
