@@ -1,17 +1,22 @@
 {
   "index": {
-    "parental_authority": ["KRO_92", "KRO_93_1"]
+    "parental_authority": ["KRO_92", "KRO_93_1", "KRO_93_2", "KRO_94_1", "KRO_95"],
+    "contact": ["KRO_113_1", "KRO_113_2", "KRO_1131_1", "KRO_1132_1", "KRO_1133"],
+    "restriction": ["KRO_109_1", "KRO_109_2", "KRO_1132_1"],
+    "custody": ["KRO_107_1", "KRO_107_2"],
+    "representation": ["KRO_98_1", "KRO_98_2", "KRO_99_1"],
+    "property": ["KRO_101_1", "KRO_101_2", "KRO_101_3"],
+    "foster_care": ["KRO_1121_1", "KRO_1123", "KRO_1127"]
   },
   "articles": {
-    "KRO_92": {
-      "tags": ["family_law", "parental_authority_duration"],
-      "templates": ["Zgodnie z art. 92 k.r.o. dziecko pozostaje aż do płnoletności pod władzą rodzicielską."],
-      "importance": 5
-    },
-    "KRO_93_1": {
-      "tags": ["family_law", "parental_authority_entitlement"],
-      "templates": ["Zgodnie z art. 93 §1 k.r.o. władza rodzicielska przysługuje obojgu rodzicom."],
-      "importance": 5
-    }
+    "KRO_92": {"importance":5},
+    "KRO_93_1": {"importance":5},
+    "KRO_93_2": {"importance":5},
+    "KRO_94_1": {"importance":4},
+    "KRO_95": {"importance":5},
+    "KRO_107_1": {"importance":5},
+    "KRO_109_1": {"importance":5},
+    "KRO_113_1": {"importance":5},
+    "KRO_1132_1": {"importance":5}
   }
 }
