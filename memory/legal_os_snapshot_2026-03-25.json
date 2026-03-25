@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-03-25",
+  "system_state": "STABLE",
+  "schema": "v2",
+  "pipeline": "BROKEN_ORCHESTRATOR",
+  "input": "Biuro_Podawcze",
+  "agents": "READY",
+  "issues": [
+    "missing orchestrator",
+    "workflow legal_pipeline invalid",
+    "agents not connected"
+  ],
+  "next_step": "build_orchestrator"
+}
