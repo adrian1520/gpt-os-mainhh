@@ -1,45 +1,67 @@
 import json
 import os
 
-LAW_PATH = "knowledge/law/kro/kro.json"
+LAW_PATH = "knowledge/law/kro/kro_indexed.json"
 
 
-# simple LLM stub (future integration)
-def llm_inference(data):
-    return {
-        "insights": ["LLLM suggested interpretation"],
-        "risks": [],
-        "recommendations": []
-    }
+# auto tagging
+def detect_tags(facts):
+    tags = set()
+    for f in facts:
+        txt = f.get("content", "").lower()
+        if "władza rodzicielska" in txt:
+            tags.add("parental_authority")
+        if "kontakt" in txt:
+            tags.add("contact")
+        if "ograniczenie" in txt:
+            tags.add("restriction")
+    return list(tags)
 
 
 def load_law():
     if os.path.exists(LAW_PATH):
-        with open(LAW_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return data[:2]  # tylko 2 arty
-    return []
+        with open(LAW_PATH), "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def build_arguments(tags, law_data):
+    args = []
+    index = law_data.get("index", {})    
+    articles = law_data.get("articles", {})
+
+    for tag in tags:
+        for aid in index.get(tag, []):
+            art = articles.get(aid, {})
+            temps = art.get("templates", [])
+            if temps:
+                args.append(temps[0])
+    return args
 
 
 def build_reasoning(data):
-    law_base = load_law()
-    llm_data = llm_inference(data)
+    law_data = load_law()
 
     output = {
         "insights": [],
         "risks": [],
         "recommendations": [],
-        "legal_basis": law_base,
-        "score": 0
+        "arguments": [],
+        "tags": []
     }
 
     facts = data.get("facts", [])
 
-    if any("ograniczenie" in f.get("content", "") for f in facts):
-        output["risks"].append("Parental risk")
-        output["score"] += 3
+    tags = detect_tags(facts)
+    output["retags"] = tags
 
-    # Merge LLM
-    output["insights"].extend(llm_data.get("insights", []))
+    arguments = build_arguments(tags, law_data)
+    output["arguments"] = arguments
+
+    if "restriction" in tags:
+        output["risks"].append("High risk intervention")
+
+    if "contact" in tags:
+        output["insights"].append("Contact issue detected")
 
     return output
