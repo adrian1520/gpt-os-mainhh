@@ -17,11 +17,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Register case (Biuro → Akta)
+      - name: Register case
         run: python modules/system/register_case.py
 
-      - name: Run parser
-        run: python modules/agents/agent_parser_v2.py
+      - name: Run parser v4
+        run: python modules/agents/agent_parser_v4.py
 
       - name: Extract facts
         run: python modules/agents/agent_fact_engine.py
@@ -40,36 +40,3 @@ jobs:
 
       - name: Aggregate outputs
         run: python modules/agents/agent_aggregator.py
-
-      - name: Master aggregator
-        run: python modules/agents/master_aggregator.py
-
-      - name: Save case state
-        run: |
-          git config user.name "actions"
-          git config user.email "actions@github.com"
-          git add cases || echo "no cases"
-          git commit -m "case_state: update" || echo "no changes"
-          git push || echo "nothing to push"
-
-      - name: Update case memory
-        run: python modules/system/case_memory_write.py
-
-      - name: Build context bundle
-        run: python modules/system/build_context_bundle.py
-
-      - name: Validate context
-        run: python modules/system/validate_context_bundle.py
-
-      - name: Write session log
-        run: python modules/system/write_session_log.py
-
-      - name: Save run log
-        run: |
-          mkdir -p memory/run_logs
-          echo '{"status": "success", "timestamp": "$(date)" }' > memory/run_logs/latest.json
-          git config user.name "actions"
-          git config user.email "actions@github.com"
-          git add memory/run_logs/latest.json
-          git commit -m "log: update run status" || echo "no changes"
-          git push || echo "nothing to push"
