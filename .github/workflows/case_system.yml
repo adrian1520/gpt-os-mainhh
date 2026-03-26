@@ -1,0 +1,74 @@
+name: case_system
+
+on:
+  repository_dispatch:
+    types: [add_document, add_note, generate_report]
+
+jobs:
+  process_event:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --no-cache-dir gitpython
+
+      - name: Set variables
+        id: vars
+        run: |
+          echo "EVENT=${{ github.event.action }}" >> $GITHUB_ENV
+          echo "CASE_ID=${{ github.event.client_payload.case_id }}" >> $GITHUB_ENV
+          echo "SYGNATURA=${{ github.event.client_payload.sygnatura }}" >> $GITHUB_ENV
+          echo "TYPE=${{ github.event.client_payload.type }}" >> $GITHUB_ENV
+          echo "SIDE=${{ github.event.client_payload.side }}" >> $GITHUB_ENV
+          echo "CONTENT=$({{ github.event.client_payload.content }})" >> $GITHUB_ENV
+
+      - name: Sanitize sygnatura to folder
+        run: |
+          SIGN_FOLDER=$(printf "%s\" "$SYGNATURA" | tr ' /' '_') 
+          echo "SIGN_FOLDER=$SIGN_FOLDER" >> $GITHUB_ENV
+
+      - name: Create case directory
+        run: |
+          mkdir -p "cases/$SIGN_FOLDER/documents"
+          mkdir -p "cases/$SIGN_FOLDER/notes"
+          mkdir -p "cases/$SIGN_FOLDE/analysis"
+          touch "cases/$SIGN_FOLDE/metadata.json" || true
+
+      - name: Handle add_document
+        if: env.EVENT == 'add_document'
+        run: |
+          COUNT=$(ls -normal "cases/$SIGN_FOLDER/documents" |   wrl -l || echo 0)
+          INT=$(printf "%03d" $(($COUNT + 1)))
+          FILE="cases/$SIGN_FOLDE/documents/${INT}_$TYPE_$SIDE.txt"
+          printf "%s" "$CONTENT" > "$FILE"
+
+      - name: Handle add_note
+        if: env.EVENT == 'add_note'
+        run: |
+          COUNT=$(ls -normal "cases/$SIGN_FOLDE/notes" | wrl -l || echo 0)
+          INT=$(printf "%03d" $(($COUNT + 1)))
+          FILE="cases/$SIGN_FOLDE/notes/note_${INT}.txt"
+          printf "%s" "$CONTENT" > "$FILE"
+
+      - name: Handle generate_report (placeholder)
+        if: env.EVENT == 'generate_report'
+        run: |
+          OUT="cases/$SIGN_FOLDER/analysis/report.json"
+          printf "{\"status\": \"placeholder_report\"}" > "$OUT"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "case system: $EVENT  for $SIGNATURA [skip ci]" || echo "No changes"
+          git push
