@@ -17,7 +17,7 @@ def build_extraction(text: str):
         "relations": safe(extract_relations, text),
     }
 
-if __name__ == "__main__":
+def main():
     import sys, json
     text = sys.stdin.read() or ""
     try:
@@ -25,5 +25,10 @@ if __name__ == "__main__":
         print(json.dumps(result))
     except Exception as e:
         print(json.dumps({"error": str(e)}))
-
+    import sys
     sys.exit(0)
+
+if __name__ == "__main__":
+    main()
+
+main()
