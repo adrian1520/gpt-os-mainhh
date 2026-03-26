@@ -1,5 +1,5 @@
-from .agent_parser_v4_part1 import *
-from .agent_parser_v4_part2 import extract_events, extract_relations, extract_facts
+from modules.agents.agent_parser_v4_part1 import *
+from modules.agents.agent_parser_v4_part2 import extract_events, extract_relations, extract_facts
 
 def build_extraction(text: str):
     return {
