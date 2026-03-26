@@ -24,29 +24,29 @@ jobs:
         run: |
           export PYTHONPATH=.
           echo "test input document" > input.txt
-          python modules/agents/agent_parser_v4.py < input.txt
+          python -m modules.agents.agent_parser_v4 < input.txt
 
       - name: Reasoning layer
         run: |
           export PYTHONPATH=.
-          python modules/agents/agent_reasoning.py
+          python -m modules.agents.agent_reasoning
 
       - name: Risk analysis
         run: |
           export PYTHONPATH=.
-          python modules/agents/agent_risk_v2.py
+          python -m modules.agents.agent_risk_v2
 
       - name: Strategy
         run: |
           export PYTHONPATH=.
-          python modules/agents/agent_strategy_v2.py
+          python -m modules.agents.agent_strategy_v2
 
       - name: Legal action
         run: |
           export PYTHONPATH=.
-          python modules/agents/agent_legal_action.py
+          python -m modules.agents.agent_legal_action
 
       - name: Aggregate outputs
         run: |
           export PYTHONPATH=.
-          python modules/agents/agent_aggregator.py
+          python -m modules.agents.agent_aggregator
