@@ -9,3 +9,12 @@ def build_extraction(text: str):
         "events": extract_events(text),
         "relations": extract_relations(text),
     }
+
+if __name__ == "__main__":
+    import sys, json
+    text = sys.stdin.read()
+    try:
+        result = build_extraction(text)
+        print(json.dumps(result))
+    except Exception as e:
+        print(json.dumps({"error": str(e)}))
