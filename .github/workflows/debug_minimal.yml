@@ -1,0 +1,30 @@
+name: Debug Minimal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Env info
+        run: |
+          pwd
+          ls -R
+          python --version
+          which python
+          echo "HELLO CI"
+
+      - name: Try pipeline entrypoint
+        run: |
+          export PYTHONPATH=.
+          python -m modules.pipeline.run_pipeline
