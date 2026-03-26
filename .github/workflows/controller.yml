@@ -1,0 +1,16 @@
+name: controller
+
+on:
+  push:
+    paths:
+      - 'events/**'
+
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Controller dispatch
+        run: echo "Controller active"
