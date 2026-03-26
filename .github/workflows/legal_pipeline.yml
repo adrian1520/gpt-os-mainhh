@@ -21,7 +21,7 @@ jobs:
         run: python modules/system/register_case.py
 
       - name: Run parser V4
-        run: python modules/agents/agent_parser_v4.py
+        run: echo "test input document" | python modules/agents/agent_parser_v4.py
 
       - name: Reasoning layer
         run: python modules/agents/agent_reasoning.py
