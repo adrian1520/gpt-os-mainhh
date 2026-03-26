@@ -21,19 +21,31 @@ jobs:
         run: python modules/system/register_case.py
 
       - name: Run parser V4
-        run: echo "test input document" | python modules/agents/agent_parser_v4.py
+        run: |
+          export PYTHONPATH=.
+          echo "test input document" | python modules/agents/agent_parser_v4.py
 
       - name: Reasoning layer
-        run: python modules/agents/agent_reasoning.py
+        run: |
+          export PYTHONPATH=.
+          python modules/agents/agent_reasoning.py
 
       - name: Risk analysis
-        run: python modules/agents/agent_risk_v2.py
+        run: |
+          export PYTHONPATH=.
+          python modules/agents/agent_risk_v2.py
 
       - name: Strategy
-        run: python modules/agents/agent_strategy_v2.py
+        run: |
+          export PYTHONPATH=.
+          python modules/agents/agent_strategy_v2.py
 
       - name: Legal action
-        run: python modules/agents/agent_legal_action.py
+        run: |
+          export PYTHONPATH=.
+          python modules/agents/agent_legal_action.py
 
       - name: Aggregate outputs
-        run: python modules/agents/agent_aggregator.py
+        run: |
+          export PYTHONPATH=.
+          python modules/agents/agent_aggregator.py
