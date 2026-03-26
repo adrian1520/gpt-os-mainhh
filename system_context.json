@@ -1,0 +1,44 @@
+{
+  "system": "LEGCAL_OS",
+  "version": "v1.0",
+  "last_update": "2026-03-26",
+  "architecture": {
+    "interface": "Custom GPT",
+    "backend": "GitHub Repo",
+    "execution": "GitHub Actions",
+    "storage": "Case Files (Acta)"
+  },
+  "modules": [
+    "agent_case",
+    "agent_reasoning",
+    "agent_report",
+    "agent_document",
+    "agent_pipeline",
+    "dispatch_client"
+  ],
+  "flow": "GPT ⒞ GitHub Dispatch ₤ Actions ₤ Repo (Akta)",
+  "events": [
+   "add_document",
+  "add_note",
+   "generate_report"
+  ],
+  "structure": {
+    "cases": "/cases/[SYGNATURA]/",
+    "documents": "/documents/001_*.txt",
+    "notes": "/notes/note_001.txt",
+    "analysis": "/analysis/report.json"
+  },
+  "pipeline": [
+    "documents -> case file",
+    "case file -> facts",
+    "facts -> reasoning",
+    "reasoning -> report",
+    "report -> document"
+  ],
+  "instructions": {
+    "add_document": "Use dispatch_client.add_document()",
+    "add_note": "Use dispatch_client.add_note()",
+    "generate_report": "Use dispatch_client.generate_report()"
+  },
+  "state": "STRING_READY FOR_GPT INETGRATION"
+}
