@@ -1,0 +1,39 @@
+{
+  "engine": "legal_reasoning_v1",
+  "version": "v7.2",
+  "input": "dashboard",
+  "steps": [
+    {
+      "id": "extract_facts",
+      "instruction": "Wyodrebnij kluczowe fakty ze dashboardu",
+      "source": "dashboard"
+    },
+    {
+      "id": "detect_conflicts",
+      "instruction": "Wykryj sprzecznosci miedzy stronami",
+      "condition": "conflicts_detected == true"
+    },
+    {
+      "id": "assess_risk",
+      "instruction": "Oceń ryzyko
+ procesowe",
+      "output": "risk_level"
+    },
+    {
+      "id": "build_strategy",
+      "instruction": "Zbuduj strategie roddinna",
+      "depends_on": ["extract_facts", "assess_risk"]
+    },
+    {
+      "id": "recommend_actions",
+      "instruction": "Zaproponuj dealenia prawne"
+    }
+  ],
+  "output_format": {
+    "facts": [],
+    "conflicts": [],
+    "risk": "",
+    "strategy": [],
+    "actions": []
+  }
+}
