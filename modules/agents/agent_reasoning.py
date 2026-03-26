@@ -17,46 +17,50 @@ def detect_tags(facts):
 
 def score_evidence(facts):
     score = 0
-    details = []
-
     for f in facts:
         txt = f.get("content", "").lower()
-        if "podem" in txt or "dowod" in txt:
+        if "dowod" in txt:
             score += 2
-            details.append("Mocny dowód")
         if "zeznania" in txt:
             score += 1
-            details.append("Zeznania")
-        if "opinia" in txt:
-            score += 2
-            details.append("Opinia bieglego")
-
-    return {"score": score, "details": details}
+    return score
 
 
-def simulate_multi(tags, contradictions, evidence_score):
-    base = evidence_score.get("score", 0)
-    mult = base / 10
+def simulate_judge(tags, evidence_score):
+    profiles = []
 
-    scenarios = [
-        {"name": "optimistic", "probability": 0.8 + mult},
-        {"name": "realistic", "probability": 0.6 + mult},
-        {"name": "pessymistic", "probability": 0.4 + mult}
-    ]
+    # Restrictive judge
+    profiles.append({
+        "name": "restrictive",
+        "bias": "wysokia ochrona dziecka",
+        "outcome": "Chetnie ogranicza władze przy ryzyku",
+        "probability": 0.7 - (evidence_score / 10)
+    })
 
-    if contradictions:
-        for s in scenarios:
-            s["probability"] -= 0.1
+    # Balanced judge
+    profiles.append({
+        "name": "balanced",
+        "bias": "analiza dowodów",
+        "outcome": "Decyzja woparta na dowodach",
+        "probability": 0.6 + (evidence_score / 10)
+    })
 
-    return scenarios
+    # Lenient judge
+    profiles.append({
+        "name": "lenient",
+        "bias": "ochrona relacji rodzinnych",
+        "outcome": "Forytze kontakty i młniejsze intervencje",
+        "probability": 0.5 + (evidence_score / 10)
+    })
+
+    return profiles
 
 
 def build_reasoning(data):
     output = {
         "tags": [],
-        "contradictions": [],
-        "evidence": {},
-        "multi_scenario": []
+        "evidence": 0,
+        "judge_scenario": []
     }
 
     facts = data.get("facts", [])
@@ -64,12 +68,9 @@ def build_reasoning(data):
     tags = detect_tags(facts)
     output["tags"] = tags
 
-    evidence = score_evidence(facts)
-    output["evidence"] = evidence
+    evidence_score = score_evidence(facts)
+    output["evidence"] = evidence_score
 
-    contra = []
-    output["contradictions"] = contra
-
-    output["multi_scenario"] = simulate_multi(tags, contra, evidence)
+    output["judge_scenario"] = simulate_judge(tags, evidence_score)
 
     return output
