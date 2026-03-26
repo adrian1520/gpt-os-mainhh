@@ -23,7 +23,8 @@ jobs:
       - name: Run parser V4
         run: |
           export PYTHONPATH=.
-          echo "test input document" | python modules/agents/agent_parser_v4.py
+          echo "test input document" > input.txt
+          python modules/agents/agent_parser_v4.py < input.txt
 
       - name: Reasoning layer
         run: |
