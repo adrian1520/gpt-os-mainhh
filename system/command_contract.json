@@ -1,4 +1,51 @@
 {
-  "version": "1.0",
-  "commands": {}
+  "version": "1.1",
+  "commands": {
+    "read_memory": {
+      "steps": [
+        {
+          "type": "api",
+          "action": "getFileContent",
+          "params": {
+            "path": "memory/system_context.json"
+          }
+        }
+      ]
+    },
+    "read_session": {
+      "steps": [
+        {
+          "type": "api",
+          "action": "getFileContent",
+          "params": {
+            "path": "memory/session_log.json"
+          }
+        }
+      ]
+    },
+    "run_analysis": {
+      "steps": [
+        {
+          "type": "api",
+          "action": "repositoryDispatch",
+          "params": {
+            "event_type": "run_analysis"
+          }
+        }
+      ]
+    },
+    "write_event": {
+      "steps": [
+        {
+          "type": "api",
+          "action": "createOrUpdateFile",
+          "params": {
+            "path": "events/write_request.json",
+            "content": "${base64_content}",
+            "message": "write event [skip ci]"
+          }
+        }
+      ]
+    }
+  }
 }
