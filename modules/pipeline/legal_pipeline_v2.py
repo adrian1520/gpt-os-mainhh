@@ -1,4 +1,4 @@
-# LEGAL PIPELINE V2 (AUTONOMOUS LOOP SYSTEM)
+# LEGAL PIPELINE V2 (REAL FEEDBACK INTEGRATION)
 
 import json
 import os
@@ -12,39 +12,48 @@ from modules.agents.agent_strategy_v2 import build_strategy
 from modules.agents.agent_aggregator import aggregate_output
 
 MEMORY_PATH = "memory/learning_log.json"
+FEEDBACK_PATH = "memory/feedback.json"
 
 
-def load_memory():
-    if not os.path.exists(MEMORY_PATH):
+def load_json(path):
+    if not os.path.exists(path):
         return []
-    with open(MEMORY_PATH, "r") as f:
+    with open(path, "r") as f:
         return json.load(f)
 
 
 def save_memory(entry):
-    data = load_memory()
+    data = load_json(MEMORY_PATH)
     data.append(entry)
     with open(MEMORY_PATH, "w") as f:
         json.dump(data, f, indent=2)
 
 
+def merge_feedback(history):
+    feedback = load_json(FEEDBACK_PATH)
+    feedback_map = {f.get("timestamp"): f for f in feedback}
+
+    for h in history:
+        ts = h.get("timestamp")
+        if ts in feedback_map:
+            h["outcome"] = feedback_map[ts].get("outcome", h.get("outcome"))
+
+    return history
+
+
 def weighted_average(history):
     if not history:
         return 50
-    total = 0
-    weight_sum = 0
+    total, weight_sum = 0, 0
     for i, h in enumerate(reversed(history[-30:])):
-        weight = i + 1
-        total += h.get("score", 50) * weight
-        weight_sum += weight
+        w = i + 1
+        total += h.get("score", 50) * w
+        weight_sum += w
     return total / weight_sum if weight_sum else 50
 
 
 def reinforcement_adjustment(history):
-    if not history:
-        return 0
-    reward = 0
-    count = 0
+    reward, count = 0, 0
     for h in history[-20:]:
         if h.get("outcome") == "win":
             reward += 10
@@ -55,22 +64,13 @@ def reinforcement_adjustment(history):
     return (reward / count) if count else 0
 
 
-def infer_outcome(score, decision):
-    # autonomous outcome estimation
-    if decision["action"] == "strong_proceed" and score >= 75:
-        return "win"
-    elif decision["action"] == "do_not_proceed":
-        return "loss"
-    return "unknown"
-
-
 def scoring_engine(risk, facts, history):
     score = 50
-    risk_str = str(risk).lower()
+    r = str(risk).lower()
 
-    if "high" in risk_str:
+    if "high" in r:
         score -= 30
-    elif "low" in risk_str:
+    elif "low" in r:
         score += 20
 
     if facts:
@@ -102,7 +102,8 @@ def decision_engine(strategy, score):
 
 
 def run_pipeline(input_data):
-    history = load_memory()
+    history = load_json(MEMORY_PATH)
+    history = merge_feedback(history)
 
     parsed = parse(input_data)
     facts = extract_facts(parsed)
@@ -114,13 +115,11 @@ def run_pipeline(input_data):
     score = scoring_engine(risk, facts, history)
     decision = decision_engine(strategy, score)
 
-    outcome = infer_outcome(score, decision)
-
     entry = {
         "timestamp": datetime.utcnow().isoformat(),
         "risk": str(risk),
         "score": score,
-        "outcome": outcome
+        "outcome": "unknown"
     }
 
     save_memory(entry)
@@ -133,5 +132,5 @@ def run_pipeline(input_data):
         "output": output,
         "score": score,
         "decision": decision,
-        "autonomous_outcome": outcome
+        "feedback_integrated": True
     }
