@@ -1,4 +1,4 @@
-# LEGAL PIPELINE V2 (DETERMINISTIC + DECISION ENGINE)
+# LEGAL PIPELINE V2 (DECISION ENGINE + SCORING)
 
 from modules.agents.agent_parser_v4 import parse
 from modules.agents.agent_fact_engine import extract_facts
@@ -8,20 +8,34 @@ from modules.agents.agent_strategy_v2 import build_strategy
 from modules.agents.agent_aggregator import aggregate_output
 
 
-def decision_engine(risk, strategy):
+def scoring_engine(risk, facts):
+    score = 50
+
+    risk_str = str(risk).lower()
+
+    if "high" in risk_str:
+        score -= 30
+    elif "low" in risk_str:
+        score += 20
+
+    if facts:
+        score += 10
+
+    return max(0, min(100, score))
+
+
+def decision_engine(risk, strategy, score):
     decision = {}
 
-    # simple deterministic rules (can be expanded)
-    risk_level = str(risk).lower()
-
-    if "high" in risk_level:
+    if score >= 70:
+        decision["action"] = "strong_proceed"
+    elif score >= 40:
         decision["action"] = "proceed_with_caution"
-    elif "low" in risk_level:
-        decision["action"] = "proceed"
     else:
-        decision["action"] = "analyze_further"
+        decision["action"] = "do_not_proceed"
 
-    decision["confidence"] = 0.7
+    decision["score"] = score
+    decision["confidence"] = round(score / 100, 2)
     decision["recommended_strategy"] = strategy
 
     return decision
@@ -40,7 +54,9 @@ def run_pipeline(input_data):
 
     output = aggregate_output(strategy)
 
-    decision = decision_engine(risk, strategy)
+    score = scoring_engine(risk, facts)
+
+    decision = decision_engine(risk, strategy, score)
 
     return {
         "facts": facts,
@@ -48,5 +64,6 @@ def run_pipeline(input_data):
         "risk": risk,
         "strategy": strategy,
         "output": output,
+        "score": score,
         "decision": decision
     }
