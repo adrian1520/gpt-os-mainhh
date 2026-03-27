@@ -19,9 +19,10 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Run dynamic legal pipeline
+      - name: Run batch legal pipeline
         run: |
           export PYTHONPATH=.
-          FILE=$(ls Legal-os/input | head -n 1)
-          echo "Processing $FILE"
-          python -c "from modules.pipeline.legal_pipeline_v2 import run_pipeline; print(run_pipeline(open(f'Legal-os/input/{FILE}').read()))"
+          for FILE in Legal-os/input/*; do
+            echo "Processing $FILE"
+            python -c "from modules.pipeline.legal_pipeline_v2 import run_pipeline; print(run_pipeline(open('$FILE').read()))"
+          done
