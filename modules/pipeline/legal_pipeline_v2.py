@@ -1,4 +1,4 @@
-# LEGAL PIPELINE V2 (ADVANCED LEARNING SYSTEM)
+# LEGAL PIPELINE V2 (REINFORCEMENT LEARNING SYSTEM)
 
 import json
 import os
@@ -35,12 +35,30 @@ def weighted_average(history):
     total = 0
     weight_sum = 0
 
-    for i, h in enumerate(reversed(history[-20:])):  # last 20 cases
-        weight = i + 1  # newer = higher weight
+    for i, h in enumerate(reversed(history[-30:])):
+        weight = i + 1
         total += h.get("score", 50) * weight
         weight_sum += weight
 
     return total / weight_sum if weight_sum else 50
+
+
+def reinforcement_adjustment(history):
+    if not history:
+        return 0
+
+    reward = 0
+    count = 0
+
+    for h in history[-20:]:
+        if h.get("outcome") == "win":
+            reward += 10
+            count += 1
+        elif h.get("outcome") == "loss":
+            reward -= 10
+            count += 1
+
+    return (reward / count) if count else 0
 
 
 def scoring_engine(risk, facts, history):
@@ -57,17 +75,19 @@ def scoring_engine(risk, facts, history):
         score += 10
 
     learned = weighted_average(history)
-    score = int((score * 0.6) + (learned * 0.4))
+    reinforcement = reinforcement_adjustment(history)
+
+    score = int((score * 0.5) + (learned * 0.3) + (reinforcement * 0.2))
 
     return max(0, min(100, score))
 
 
 def decision_engine(strategy, score):
-    if score >= 75:
+    if score >= 80:
         action = "strong_proceed"
-    elif score >= 50:
+    elif score >= 60:
         action = "proceed"
-    elif score >= 30:
+    elif score >= 40:
         action = "proceed_with_caution"
     else:
         action = "do_not_proceed"
@@ -96,7 +116,8 @@ def run_pipeline(input_data):
     entry = {
         "timestamp": datetime.utcnow().isoformat(),
         "risk": str(risk),
-        "score": score
+        "score": score,
+        "outcome": "unknown"
     }
 
     save_memory(entry)
