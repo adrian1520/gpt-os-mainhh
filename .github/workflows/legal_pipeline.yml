@@ -1,11 +1,13 @@
-name: Legal Pipeline
+name: legal_pipeline
 
 on:
   push:
-  workflow_dispatch:
+    paths:
+      - 'Legal-os/input/**'
+      - 'events/**'
 
 jobs:
-  process-legal-case:
+  run-pipeline:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,38 +17,9 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.10'
 
-      - name: Register case
-        run: python modules/system/register_case.py
-
-      - name: Run parser V4
+      - name: Run deterministic legal pipeline
         run: |
           export PYTHONPATH=.
-          echo "test input document" > input.txt
-          python -m modules.agents.agent_parser_v4 < input.txt
-
-      - name: Reasoning layer
-        run: |
-          export PYTHONPATH=.
-          python -m modules.agents.agent_reasoning
-
-      - name: Risk analysis
-        run: |
-          export PYTHONPATH=.
-          python -m modules.agents.agent_risk_v2
-
-      - name: Strategy
-        run: |
-          export PYTHONPATH=.
-          python -m modules.agents.agent_strategy_v2
-
-      - name: Legal action
-        run: |
-          export PYTHONPATH=.
-          python -m modules.agents.agent_legal_action
-
-      - name: Aggregate outputs
-        run: |
-          export PYTHONPATH=.
-          python -m modules.agents.agent_aggregator
+          python -c "from modules.pipeline.legal_pipeline_v2 import run_pipeline; print(run_pipeline(open('Legal-os/input/postanowienie_nadzor_III_Nsm_756_25.txt').read()))"
