@@ -19,14 +19,25 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Run batch legal pipeline with outputs
+      - name: Run batch legal pipeline with structured outputs
         run: |
           export PYTHONPATH=.
           mkdir -p Legal-os/Outputs
           for FILE in Legal-os/input/*; do
             NAME=$(basename "$FILE")
             echo "Processing $NAME"
-            python -c "from modules.pipeline.legal_pipeline_v2 import run_pipeline; result = run_pipeline(open('$FILE').read()); open(f'Legal-os/Outputs/{NAME}.out','w').write(str(result))"
+            python - <<EOF
+import json
+from modules.pipeline.legal_pipeline_v2 import run_pipeline
+
+with open("$FILE", "r") as f:
+    data = f.read()
+
+result = run_pipeline(data)
+
+with open(f"Legal-os/Outputs/{NAME}.json", "w") as out:
+    json.dump(result, out, indent=2, ensure_ascii=False)
+EOF
           done
 
       - name: Commit outputs
@@ -34,5 +45,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add Legal-os/Outputs/*
-          git commit -m "auto: add pipeline outputs [skip ci]" || echo "No changes"
+          git commit -m "auto: structured outputs [skip ci]" || echo "No changes"
           git push
