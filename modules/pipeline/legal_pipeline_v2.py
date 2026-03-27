@@ -1,7 +1,8 @@
-# LEGAL PIPELINE V2 (LEARNING SYSTEM)
+# LEGAL PIPELINE V2 (ADVANCED LEARNING SYSTEM)
 
 import json
 import os
+from datetime import datetime
 
 from modules.agents.agent_parser_v4 import parse
 from modules.agents.agent_fact_engine import extract_facts
@@ -27,6 +28,21 @@ def save_memory(entry):
         json.dump(data, f, indent=2)
 
 
+def weighted_average(history):
+    if not history:
+        return 50
+
+    total = 0
+    weight_sum = 0
+
+    for i, h in enumerate(reversed(history[-20:])):  # last 20 cases
+        weight = i + 1  # newer = higher weight
+        total += h.get("score", 50) * weight
+        weight_sum += weight
+
+    return total / weight_sum if weight_sum else 50
+
+
 def scoring_engine(risk, facts, history):
     score = 50
 
@@ -40,18 +56,18 @@ def scoring_engine(risk, facts, history):
     if facts:
         score += 10
 
-    # learning influence
-    if history:
-        avg = sum([h.get("score", 50) for h in history]) / len(history)
-        score = int((score + avg) / 2)
+    learned = weighted_average(history)
+    score = int((score * 0.6) + (learned * 0.4))
 
     return max(0, min(100, score))
 
 
 def decision_engine(strategy, score):
-    if score >= 70:
+    if score >= 75:
         action = "strong_proceed"
-    elif score >= 40:
+    elif score >= 50:
+        action = "proceed"
+    elif score >= 30:
         action = "proceed_with_caution"
     else:
         action = "do_not_proceed"
@@ -78,6 +94,7 @@ def run_pipeline(input_data):
     decision = decision_engine(strategy, score)
 
     entry = {
+        "timestamp": datetime.utcnow().isoformat(),
         "risk": str(risk),
         "score": score
     }
