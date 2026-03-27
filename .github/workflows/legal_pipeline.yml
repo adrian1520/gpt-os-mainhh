@@ -19,10 +19,20 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Run batch legal pipeline
+      - name: Run batch legal pipeline with outputs
         run: |
           export PYTHONPATH=.
+          mkdir -p Legal-os/Outputs
           for FILE in Legal-os/input/*; do
-            echo "Processing $FILE"
-            python -c "from modules.pipeline.legal_pipeline_v2 import run_pipeline; print(run_pipeline(open('$FILE').read()))"
+            NAME=$(basename "$FILE")
+            echo "Processing $NAME"
+            python -c "from modules.pipeline.legal_pipeline_v2 import run_pipeline; result = run_pipeline(open('$FILE').read()); open(f'Legal-os/Outputs/{NAME}.out','w').write(str(result))"
           done
+
+      - name: Commit outputs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add Legal-os/Outputs/*
+          git commit -m "auto: add pipeline outputs [skip ci]" || echo "No changes"
+          git push
