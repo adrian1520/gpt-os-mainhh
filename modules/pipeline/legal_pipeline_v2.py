@@ -1,7 +1,8 @@
-# LEGAL PIPELINE V2 (REAL FEEDBACK INTEGRATION)
+# LEGAL PIPELINE V2 (ML INFERENCE ENABLED)
 
 import json
 import os
+import pickle
 from datetime import datetime
 
 from modules.agents.agent_parser_v4 import parse
@@ -13,6 +14,7 @@ from modules.agents.agent_aggregator import aggregate_output
 
 MEMORY_PATH = "memory/learning_log.json"
 FEEDBACK_PATH = "memory/feedback.json"
+MODEL_PATH = "models/model.pkl"
 
 
 def load_json(path):
@@ -20,6 +22,13 @@ def load_json(path):
         return []
     with open(path, "r") as f:
         return json.load(f)
+
+
+def load_model():
+    if not os.path.exists(MODEL_PATH):
+        return None
+    with open(MODEL_PATH, "rb") as f:
+        return pickle.load(f)
 
 
 def save_memory(entry):
@@ -32,71 +41,37 @@ def save_memory(entry):
 def merge_feedback(history):
     feedback = load_json(FEEDBACK_PATH)
     feedback_map = {f.get("timestamp"): f for f in feedback}
-
     for h in history:
         ts = h.get("timestamp")
         if ts in feedback_map:
             h["outcome"] = feedback_map[ts].get("outcome", h.get("outcome"))
-
     return history
 
 
-def weighted_average(history):
-    if not history:
-        return 50
-    total, weight_sum = 0, 0
-    for i, h in enumerate(reversed(history[-30:])):
-        w = i + 1
-        total += h.get("score", 50) * w
-        weight_sum += w
-    return total / weight_sum if weight_sum else 50
+def ml_predict(model, score, risk):
+    if not model:
+        return None
+    risk_val = 1 if "high" in str(risk).lower() else 0
+    prob = model.predict_proba([[score, risk_val]])[0][1]
+    return prob
 
 
-def reinforcement_adjustment(history):
-    reward, count = 0, 0
-    for h in history[-20:]:
-        if h.get("outcome") == "win":
-            reward += 10
-            count += 1
-        elif h.get("outcome") == "loss":
-            reward -= 10
-            count += 1
-    return (reward / count) if count else 0
+def decision_from_ml(prob, strategy):
+    if prob is None:
+        return None
 
-
-def scoring_engine(risk, facts, history):
-    score = 50
-    r = str(risk).lower()
-
-    if "high" in r:
-        score -= 30
-    elif "low" in r:
-        score += 20
-
-    if facts:
-        score += 10
-
-    learned = weighted_average(history)
-    reinforcement = reinforcement_adjustment(history)
-
-    score = int((score * 0.5) + (learned * 0.3) + (reinforcement * 0.2))
-    return max(0, min(100, score))
-
-
-def decision_engine(strategy, score):
-    if score >= 80:
+    if prob >= 0.75:
         action = "strong_proceed"
-    elif score >= 60:
+    elif prob >= 0.6:
         action = "proceed"
-    elif score >= 40:
+    elif prob >= 0.4:
         action = "proceed_with_caution"
     else:
         action = "do_not_proceed"
 
     return {
         "action": action,
-        "score": score,
-        "confidence": round(score / 100, 2),
+        "confidence": round(prob, 2),
         "recommended_strategy": strategy
     }
 
@@ -104,6 +79,7 @@ def decision_engine(strategy, score):
 def run_pipeline(input_data):
     history = load_json(MEMORY_PATH)
     history = merge_feedback(history)
+    model = load_model()
 
     parsed = parse(input_data)
     facts = extract_facts(parsed)
@@ -112,13 +88,17 @@ def run_pipeline(input_data):
     strategy = build_strategy(facts, law, risk)
     output = aggregate_output(strategy)
 
-    score = scoring_engine(risk, facts, history)
-    decision = decision_engine(strategy, score)
+    base_score = 50
+    prob = ml_predict(model, base_score, risk)
+    decision = decision_from_ml(prob, strategy)
+
+    if decision is None:
+        decision = {"action": "fallback", "confidence": 0.5}
 
     entry = {
         "timestamp": datetime.utcnow().isoformat(),
         "risk": str(risk),
-        "score": score,
+        "score": base_score,
         "outcome": "unknown"
     }
 
@@ -130,7 +110,7 @@ def run_pipeline(input_data):
         "risk": risk,
         "strategy": strategy,
         "output": output,
-        "score": score,
+        "ml_probability": prob,
         "decision": decision,
-        "feedback_integrated": True
+        "ml_enabled": model is not None
     }
